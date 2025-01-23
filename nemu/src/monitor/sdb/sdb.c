@@ -23,6 +23,7 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void wp_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -77,7 +78,7 @@ static int cmd_info(char* args){
     }
     else if(strcmp(arg, "w") == 0){
     /* print watchpoint info */
-      
+      wp_display();
     }
     else{
       printf("Unknown command '%s'\n", arg);

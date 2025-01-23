@@ -41,8 +41,13 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-void isa_reg_display() {
-  for(int i = 0; i < sizeof(regs)/sizeof(regs[0]);i++){
-    printf("%s: 0x%x \n",regs[i],gpr(i));
+void wp_display() {
+  if(head == NULL) {
+    printf("No watchpoint.\n");
+    return;
+  }
+  while(head != NULL) {
+    printf("Watchpoint %d: %s\n", head->NO, "TODO");
+    head = head->next;
   }
 }
