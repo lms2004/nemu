@@ -137,9 +137,9 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si","step execute",cmd_si},
-  { "info","print program information",cmd_info},
-  { "x","scan memory",cmd_x},
+  { "si","Step execute",cmd_si},
+  { "info","Print program information",cmd_info},
+  { "x","Scan memory",cmd_x},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
