@@ -53,10 +53,38 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char* args){
-  char *arg = strtok(NULL, " ");
-  int N = atoi(arg);
-  cpu_exec(N);
+  if(args == NULL){
+    /* no argument given */
+    printf("si need args, eg. si 10\n");
+  }else{
+    char *arg = strtok(NULL, " ");
+    int N = atoi(arg);
+
+    cpu_exec(N);
+  }
   return 0;
+}
+
+static int cmd_info(char* args){
+  if(args == NULL){
+    /* no argument given */
+    printf("info need args, eg. info r\n");
+  }else{
+    char *arg = strtok(NULL, " ");
+    /* print regs info */
+    if(strcmp(arg, "r") == 0){
+      isa_reg_display();
+    }
+    else if(strcmp(arg, "w") == 0){
+    /* print watchpoint info */
+      
+    }
+    else{
+      printf("Unknown command '%s'\n", arg);
+    }
+  }
+  return 0;
+
 }
 
 
@@ -71,6 +99,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si","step execute",cmd_si},
+  { "info","print program information",cmd_info},
 
 };
 
