@@ -24,6 +24,7 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 void wp_display();
+word_t vaddr_read(vaddr_t addr, int len);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -88,6 +89,43 @@ static int cmd_info(char* args){
 
 }
 
+static int cmd_x(char* args){
+  if(args == NULL){
+    /* no argument given */
+    printf("x command:  need N and ($reg | addr), eg. x 10 $esp\n");
+  }else{
+    char *arg = strtok(NULL, " ");
+    int N = atoi(arg);
+
+    if((arg = strtok(NULL, " ")) == NULL){
+      printf("x command:  need N and ($reg | addr), eg. x 10 $esp\n");
+      return 0;
+    }
+
+    vaddr_t addr;
+    /* parse addr */
+    if(arg[0] == '$'){
+      /* get reg value */
+      bool success = false;
+      addr = isa_reg_str2val(arg + 1, &success);
+
+      if(!success){
+        printf("Invalid reg name\n");
+        return 0;
+      }
+
+    }else {
+      addr = strtol(arg, NULL, 16);
+    }
+
+    for(int i = 0;i < N;i++){
+      printf("%x: %x",addr + 4*i, vaddr_read(addr, 4));
+      if(i % 4 == 3) printf("\n");
+    }
+
+  }
+  return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -101,7 +139,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si","step execute",cmd_si},
   { "info","print program information",cmd_info},
-
+  { "x","scan memory",cmd_x},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
