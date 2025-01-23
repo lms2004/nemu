@@ -54,6 +54,33 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char* args);
+
+static int cmd_info(char* args);
+
+static int cmd_x(char* args);
+
+static int cmd_p(char *args);
+
+static int cmd_help(char *args);
+
+
+static struct {
+  const char *name;
+  const char *description;
+  int (*handler) (char *);
+} cmd_table [] = {
+  { "help", "Display information about all supported commands", cmd_help },
+  { "c", "Continue the execution of the program", cmd_c },
+  { "q", "Exit NEMU", cmd_q },
+  { "si", "Step execute", cmd_si},
+  { "info", "Print program information", cmd_info},
+  { "x", "Scan memory", cmd_x},
+  { "p", "eval expr", cmd_p}
+};
+
+#define NR_CMD ARRLEN(cmd_table)
+
 static int cmd_si(char* args){
   if(args == NULL){
     /* no argument given */
@@ -97,6 +124,7 @@ static int cmd_x(char* args){
     char *arg = strtok(NULL, " ");
     int N = atoi(arg);
 
+    /* check addr */
     if((arg = strtok(NULL, " ")) == NULL){
       printf("x command:  need N and ($reg | addr), eg. x 10 $esp\n");
       return 0;
@@ -129,22 +157,11 @@ static int cmd_x(char* args){
   return 0;
 }
 
-static int cmd_help(char *args);
+static int cmd_p(char *args){
+  
+  return 0;
+}
 
-static struct {
-  const char *name;
-  const char *description;
-  int (*handler) (char *);
-} cmd_table [] = {
-  { "help", "Display information about all supported commands", cmd_help },
-  { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
-  { "si","Step execute",cmd_si},
-  { "info","Print program information",cmd_info},
-  { "x","Scan memory",cmd_x},
-};
-
-#define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_help(char *args) {
   /* extract the first argument */
