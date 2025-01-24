@@ -235,7 +235,6 @@ word_t expr(char *e, char* error) {
     return 0;
   }
 
-  return 0;
 
   int expr_value = 0;
   int quote_flag = 0;
