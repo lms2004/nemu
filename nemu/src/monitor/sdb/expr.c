@@ -131,7 +131,6 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
   
-  assert(0);
   // int expr_value = 0;
 
   for(int i = 0;i < nr_token;i++){
