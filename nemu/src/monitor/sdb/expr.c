@@ -38,8 +38,8 @@ static struct rule {
   {"-", TK_SUB},        // sub
   {"\\*", TK_MUL},      // mul
   {"/", TK_DIV},        // div
-  {"(", TK_LQUOTE},     // left quote
-  {")", TK_RQUOTE},     // right quote
+  {"\\(", TK_LQUOTE},     // left quote
+  {"\\)", TK_RQUOTE},     // right quote
 };
 
 #define NR_REGEX ARRLEN(rules)
