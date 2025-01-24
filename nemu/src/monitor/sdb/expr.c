@@ -250,7 +250,7 @@ word_t expr(char *e, char* error) {
 
     /* not Rquote into stack */
     if(tokens[i].type != TK_RQUOTE){
-      stack[stack_top++] = tokens[i];
+      stack[++stack_top] = tokens[i];
     }
     else{
       int sub_expr_value = eval_expr(error);
