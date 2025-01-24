@@ -211,6 +211,7 @@ int eval_expr(char* error){
 
           /* Op is in the end */
           if(has_r_op == 1){
+            strcpy(error, "op next to op OR op next to nothing");
             return -1;
           }
           Log("Quote_sub_expr_value = %d", rhs);
