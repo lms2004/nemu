@@ -160,11 +160,12 @@ static int cmd_x(char* args){
 static int cmd_p(char *args){
   if(args == NULL){
     /* no argument given */
-    printf("p command:  p (expr) \n");
+    printf("p command:  eg. p (expr) \n");
     return 0;
   }
+  args = strtok(NULL, "");
 
-  bool success = false;
+  bool success = true;
 
   expr(args, &success);
   
