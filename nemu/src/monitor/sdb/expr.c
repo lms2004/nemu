@@ -126,17 +126,132 @@ static bool make_token(char *e) {
 }
 
 
+
+
+
+int eval_expr(){
+  int rhs = atoi(stack[stack_top].str);
+
+  /* Elem in the end isn't number */
+  if(rhs == 0){
+    return -1;
+  }
+
+  int rop = -1;
+
+  int has_r_num = 0;
+  int has_r_op = 0;
+
+  /* l op r
+    num --  has_r_op  (true) (num op.type rhs) -> rhs 
+        
+        --  has_r_num (true)  return -1
+        
+        reset: 
+          has_r_num -> 1
+          has_r_op -> 0
+
+    op  --  has_r_op  (true)  return -1
+
+        --  has_r_num (true)  
+                              rop = op.type
+                      (false)
+                              return -1
+        reset:
+          has_r_num = 0
+          has_r_op = 1
+  */ 
+
+  while(stack_top >= 0){
+      switch(stack[stack_top].type){
+        case TK_NUM:
+
+          if(has_r_num == 1){
+            return -1;
+          }
+
+          if(has_r_op == 1){
+            int lnum = atoi(stack[stack_top].str);
+            /* Diff ops */
+            switch(rop){
+              case TK_PLUS:
+                rhs = lnum + rhs;
+                break;
+              case TK_SUB:
+                rhs = lnum - rhs;
+                break;
+              case TK_MUL:
+                rhs = lnum * rhs;
+                break;
+              case TK_DIV:
+                rhs = lnum / rhs;
+                break;
+            }
+          }
+
+          /* reset  */
+          has_r_num = 1;
+          has_r_op = 0;
+          break;
+        case TK_PLUS: case TK_DIV: case TK_MUL: case TK_SUB:
+
+          if(has_r_num == 0 || has_r_op == 1){
+            return -1;
+          }
+
+          rop = stack[stack_top].type;
+
+          /* reset */
+          has_r_num = 0;  
+          has_r_op = 1;
+          break;
+        
+        /* optional quote match_end*/
+        case TK_LQUOTE:
+          stack_top--;
+
+          /* Op is in the end */
+          if(has_r_op == 1){
+            return -1;
+          }
+
+          return rhs; 
+          break;
+      }
+      stack_top--;
+    }
+
+    /* Op is in the end */
+    if(has_r_op == 1){
+      return -1;
+    }
+
+    return rhs; 
+}
+
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
 
-  // int expr_value = 0;
+  int expr_value = 0;
 
   for(int i = 0;i < nr_token;i++){
+    /* not Rquote into stack */
+    if(tokens[i].type != TK_RQUOTE){
+      stack[stack_top++] = tokens[i];
+    }
+    else{
+      int sub_expr_value = eval_expr();
+      if(sub_expr_value == -1){
+        *success = false;
+        return 0;
+      }
+      expr_value += sub_expr_value;
+    }
 
   }
 
-  return 0;
+  return expr_value;
 }
