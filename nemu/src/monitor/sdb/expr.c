@@ -228,6 +228,7 @@ int eval_expr(){
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
+    printf("make_token failed");
     *success = false;
     return 0;
   }
@@ -250,6 +251,7 @@ word_t expr(char *e, bool *success) {
     else{
       int sub_expr_value = eval_expr();
       if(sub_expr_value == -1){
+        printf("With quote: eval_expr failed");
         *success = false;
         return 0;
       }
@@ -261,6 +263,7 @@ word_t expr(char *e, bool *success) {
   if(quote_flag == 0){
     expr_value = eval_expr();
     if(expr_value == -1){
+      printf("Without quote: eval_expr failed");
       *success = false;
       return 0;
     }
