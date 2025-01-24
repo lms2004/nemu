@@ -19,11 +19,10 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
-
+#include <string.h>
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-
-  /* TODO: Add more token types */
+  TK_NOTYPE = 256, TK_NUM, TK_PLUS, TK_SUB, 
+  TK_MUL, TK_DIV, TK_EQ, TK_LQUOTE, TK_RQUOTE,
 
 };
 
@@ -32,13 +31,15 @@ static struct rule {
   int token_type;
 } rules[] = {
 
-  /* TODO: Add more rules.
-   * Pay attention to the precedence level of different rules.
-   */
-
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
+  {"+", TK_PLUS},     // plus
   {"==", TK_EQ},        // equal
+  {"\\d+", TK_NUM},      // number
+  {"-", TK_SUB},        // sub
+  {"\\*", TK_MUL},      // mul
+  {"/", TK_DIV},        // div
+  {"(", TK_LQUOTE},   // left quote
+  {")", TK_RQUOTE},   // right quote
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -70,6 +71,11 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
+/* used to quote match */
+static Token stack[32] __attribute__((used)) = {};
+static int stack_top __attribute__((used))  = 0;
+
+
 static bool make_token(char *e) {
   int position = 0;
   int i;
@@ -89,15 +95,22 @@ static bool make_token(char *e) {
 
         position += substr_len;
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
-
         switch (rules[i].token_type) {
-          default: TODO();
+          case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE; break;
+          case TK_NUM: tokens[nr_token].type = TK_NUM; break;
+          case TK_PLUS: tokens[nr_token].type = TK_PLUS; break;
+          case TK_SUB: tokens[nr_token].type = TK_SUB; break;
+          case TK_MUL: tokens[nr_token].type = TK_MUL; break;
+          case TK_DIV: tokens[nr_token].type = TK_DIV; break;
+          case TK_EQ: tokens[nr_token].type = TK_EQ; break;
+          case TK_LQUOTE: tokens[nr_token].type = TK_LQUOTE; break;
+          case TK_RQUOTE: tokens[nr_token].type = TK_RQUOTE; break;
+          default: assert(0);
         }
+        /* copy token_str to tokens_arr */
+        strncpy(tokens[nr_token].str, substr_start, substr_len);
 
+        nr_token++;
         break;
       }
     }
@@ -117,9 +130,13 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
+  
+  assert(0);
+  // int expr_value = 0;
 
-  /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  for(int i = 0;i < nr_token;i++){
+
+  }
 
   return 0;
 }
