@@ -71,7 +71,7 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
-/* for token_match */
+/* For token_match */
 static Token stack[32] __attribute__((used)) = {};
 static int stack_top __attribute__((used))  = 0;
 

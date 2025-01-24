@@ -158,6 +158,12 @@ static int cmd_x(char* args){
 }
 
 static int cmd_p(char *args){
+  if(args == NULL){
+    /* no argument given */
+    printf("p command:  p (expr) \n");
+    return 0;
+  }
+
   bool success = false;
 
   expr(args, &success);
@@ -166,7 +172,7 @@ static int cmd_p(char *args){
     printf("Invalid expression\n");
     return 0;
   }
-  
+
   return 0;
 }
 
