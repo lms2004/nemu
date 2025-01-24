@@ -165,13 +165,12 @@ static int cmd_p(char *args){
   }
   args = strtok(NULL, "");
 
-  bool success = true;
+  char* error = "";
 
-  expr(args, &success);
+  expr(args, error);
   
-  if(!success){
-    printf("Invalid expression\n");
-    return 0;
+  if(strcmp(error, "") != 0){
+    Error("%s", error);
   }
 
   return 0;

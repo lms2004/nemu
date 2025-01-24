@@ -125,11 +125,12 @@ static bool make_token(char *e) {
   return true;
 }
 
-int eval_expr(){
+int eval_expr(char* error){
   int rhs = atoi(stack[stack_top].str);
 
   /* Elem in the end isn't number */
   if(rhs == 0){
+    strcpy(error, "Elem in the end isn't number");
     return -1;
   }
 
@@ -163,6 +164,7 @@ int eval_expr(){
         case TK_NUM:
 
           if(has_r_num == 1){
+            strcpy(error, "num next to num");
             return -1;
           }
 
@@ -192,6 +194,7 @@ int eval_expr(){
         case TK_PLUS: case TK_DIV: case TK_MUL: case TK_SUB:
 
           if(has_r_num == 0 || has_r_op == 1){
+            strcpy(error, "op next to op OR op next to nothing");
             return -1;
           }
 
@@ -226,10 +229,9 @@ int eval_expr(){
     return rhs; 
 }
 
-word_t expr(char *e, bool *success) {
+word_t expr(char *e, char* error) {
   if (!make_token(e)) {
-    printf("make_token failed -> ");
-    *success = false;
+    strcpy(error, "make_token failed");
     return 0;
   }
 
@@ -249,10 +251,9 @@ word_t expr(char *e, bool *success) {
       stack[stack_top++] = tokens[i];
     }
     else{
-      int sub_expr_value = eval_expr();
+      int sub_expr_value = eval_expr(error);
       if(sub_expr_value == -1){
-        printf("With quote: eval_expr failed -> ");
-        *success = false;
+        strcpy(error, "(With quote)");
         return 0;
       }
       expr_value += sub_expr_value;
@@ -261,10 +262,9 @@ word_t expr(char *e, bool *success) {
 
   /* without quote */
   if(quote_flag == 0){
-    expr_value = eval_expr();
+    expr_value = eval_expr(error);
     if(expr_value == -1){
-      printf("Without quote: eval_expr failed -> ");
-      *success = false;
+      strcpy(error, "(Without quote)");
       return 0;
     }
   }
