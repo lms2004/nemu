@@ -96,7 +96,7 @@ static bool make_token(char *e) {
         position += substr_len;
 
         switch (rules[i].token_type) {
-          case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE; break;
+          case TK_NOTYPE: continue;     // ignore spaces
           case TK_NUM: tokens[nr_token].type = TK_NUM; break;
           case TK_PLUS: tokens[nr_token].type = TK_PLUS; break;
           case TK_SUB: tokens[nr_token].type = TK_SUB; break;
@@ -107,6 +107,7 @@ static bool make_token(char *e) {
           case TK_RQUOTE: tokens[nr_token].type = TK_RQUOTE; break;
           default: printf("Unknow token type\n"); return false;
         }
+
         /* copy token_str to tokens_arr */
         strncpy(tokens[nr_token].str, substr_start, substr_len);
 
