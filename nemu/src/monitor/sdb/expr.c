@@ -127,8 +127,6 @@ static bool make_token(char *e) {
 
 
 
-
-
 int eval_expr(){
   int rhs = atoi(stack[stack_top].str);
 
@@ -214,7 +212,7 @@ int eval_expr(){
           if(has_r_op == 1){
             return -1;
           }
-
+          Log("Quote_sub_expr_value = %d", rhs);
           return rhs; 
           break;
       }
@@ -225,7 +223,8 @@ int eval_expr(){
     if(has_r_op == 1){
       return -1;
     }
-
+  
+    Log("Sub_expr_value = %d", rhs);
     return rhs; 
 }
 
@@ -252,6 +251,7 @@ word_t expr(char *e, bool *success) {
     }
 
   }
-
+  
+  Log("Expr_value = %d", expr_value);
   return expr_value;
 }
