@@ -73,7 +73,7 @@ static int nr_token __attribute__((used))  = 0;
 
 /* For token_match */
 static Token stack[32] __attribute__((used)) = {};
-static int stack_top __attribute__((used))  = 0;
+static int stack_top __attribute__((used))  = -1;
 
 
 static bool make_token(char *e) {
@@ -228,7 +228,7 @@ int eval_expr(){
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
-    printf("make_token failed");
+    printf("make_token failed -> ");
     *success = false;
     return 0;
   }
@@ -251,7 +251,7 @@ word_t expr(char *e, bool *success) {
     else{
       int sub_expr_value = eval_expr();
       if(sub_expr_value == -1){
-        printf("With quote: eval_expr failed");
+        printf("With quote: eval_expr failed -> ");
         *success = false;
         return 0;
       }
@@ -263,7 +263,7 @@ word_t expr(char *e, bool *success) {
   if(quote_flag == 0){
     expr_value = eval_expr();
     if(expr_value == -1){
-      printf("Without quote: eval_expr failed");
+      printf("Without quote: eval_expr failed -> ");
       *success = false;
       return 0;
     }
