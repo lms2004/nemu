@@ -34,7 +34,7 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", TK_PLUS},     // plus
   {"==", TK_EQ},        // equal
-  {"\\d+", TK_NUM},     // number
+  {"[0-9]+", TK_NUM},     // number
   {"-", TK_SUB},        // sub
   {"\\*", TK_MUL},      // mul
   {"/", TK_DIV},        // div
@@ -105,7 +105,7 @@ static bool make_token(char *e) {
           case TK_EQ: tokens[nr_token].type = TK_EQ; break;
           case TK_LQUOTE: tokens[nr_token].type = TK_LQUOTE; break;
           case TK_RQUOTE: tokens[nr_token].type = TK_RQUOTE; break;
-          default: assert(0);
+          default: printf("Unknow token type\n"); return false;
         }
         /* copy token_str to tokens_arr */
         strncpy(tokens[nr_token].str, substr_start, substr_len);
