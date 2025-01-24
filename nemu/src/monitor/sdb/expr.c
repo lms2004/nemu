@@ -125,8 +125,6 @@ static bool make_token(char *e) {
   return true;
 }
 
-
-
 int eval_expr(){
   int rhs = atoi(stack[stack_top].str);
 
@@ -235,8 +233,16 @@ word_t expr(char *e, bool *success) {
   }
 
   int expr_value = 0;
+  int quote_flag = 0;
 
+  /* With quote */
   for(int i = 0;i < nr_token;i++){
+
+    /* quote_flag */
+    if(quote_flag == 0 && tokens[i].type == TK_LQUOTE){
+      quote_flag = 1;
+    }
+
     /* not Rquote into stack */
     if(tokens[i].type != TK_RQUOTE){
       stack[stack_top++] = tokens[i];
@@ -249,9 +255,17 @@ word_t expr(char *e, bool *success) {
       }
       expr_value += sub_expr_value;
     }
-
   }
-  
+
+  /* without quote */
+  if(quote_flag == 0){
+    expr_value = eval_expr();
+    if(expr_value == -1){
+      *success = false;
+      return 0;
+    }
+  }
+
   Log("Expr_value = %d", expr_value);
   return expr_value;
 }
