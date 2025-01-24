@@ -32,14 +32,14 @@ static struct rule {
 } rules[] = {
 
   {" +", TK_NOTYPE},    // spaces
-  {"+", TK_PLUS},     // plus
+  {"\\+", TK_PLUS},     // plus
   {"==", TK_EQ},        // equal
-  {"\\d+", TK_NUM},      // number
+  {"\\d+", TK_NUM},     // number
   {"-", TK_SUB},        // sub
   {"\\*", TK_MUL},      // mul
   {"/", TK_DIV},        // div
-  {"(", TK_LQUOTE},   // left quote
-  {")", TK_RQUOTE},   // right quote
+  {"(", TK_LQUOTE},     // left quote
+  {")", TK_RQUOTE},     // right quote
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -130,7 +130,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  
+
   // int expr_value = 0;
 
   for(int i = 0;i < nr_token;i++){
