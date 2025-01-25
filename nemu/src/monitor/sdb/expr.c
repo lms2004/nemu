@@ -140,7 +140,8 @@ int eval_expr(char* error){
 
   int has_r_num = 0;
   int has_r_op = 0;
-
+  
+  Token Num; 
   /* l op r
     num --  has_r_op  (true) (num op.type rhs) -> rhs 
         
@@ -217,11 +218,12 @@ int eval_expr(char* error){
             return -1;
           }
 
-          Token Num; 
-          snprintf(Num.str, sizeof(Num.str), "%d", rhs);  // 将整数转换为字符串
+          /* push newElem */
+          snprintf(Num.str, sizeof(Num.str), "%d", rhs);
           Num.type = TK_NUM;
           
           stack[stack_top] = Num;
+
           Log("Quote_sub_expr_value = %d", rhs);
           return rhs; 
       }
@@ -233,6 +235,12 @@ int eval_expr(char* error){
       return -1;
     }
   
+    /* push newElem */
+    snprintf(Num.str, sizeof(Num.str), "%d", rhs);
+    Num.type = TK_NUM;
+    
+    stack[stack_top] = Num;
+
     Log("Sub_expr_value = %d", rhs);
     return rhs; 
 }
