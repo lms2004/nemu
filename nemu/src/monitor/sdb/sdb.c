@@ -165,7 +165,7 @@ static int cmd_p(char *args){
   }
   args = strtok(NULL, "");
 
-  char* error = "";
+  char* error = calloc(128, sizeof(char));
 
   expr(args, error);
   

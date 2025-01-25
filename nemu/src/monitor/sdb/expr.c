@@ -20,6 +20,8 @@
  */
 #include <regex.h>
 #include <string.h>
+#include <stdlib.h>
+
 enum {
   TK_NOTYPE = 256, TK_NUM, TK_PLUS, TK_SUB, 
   TK_MUL, TK_DIV, TK_EQ, TK_LQUOTE, TK_RQUOTE,
@@ -214,9 +216,14 @@ int eval_expr(char* error){
             strcpy(error, "op next to op OR op next to nothing");
             return -1;
           }
+
+          Token Num; 
+          snprintf(Num.str, sizeof(Num.str), "%d", rhs);  // 将整数转换为字符串
+          Num.type = TK_NUM;
+          
+          stack[stack_top] = Num;
           Log("Quote_sub_expr_value = %d", rhs);
           return rhs; 
-          break;
       }
       stack_top--;
     }
@@ -235,7 +242,6 @@ word_t expr(char *e, char* error) {
     strcpy(error, "make_token failed");
     return 0;
   }
-
 
   int expr_value = 0;
   int quote_flag = 0;
