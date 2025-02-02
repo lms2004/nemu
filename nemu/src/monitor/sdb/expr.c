@@ -70,11 +70,11 @@ typedef struct token {
   char str[32];
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[4096] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 /* For token_match */
-Token stack[2048]  = {};
+Token stack[4096]  = {};
 int stack_top  = -1;
 
 
