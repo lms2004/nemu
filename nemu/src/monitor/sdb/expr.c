@@ -74,8 +74,8 @@ static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 /* For token_match */
-static Token stack[32] __attribute__((used)) = {};
-static int stack_top __attribute__((used))  = -1;
+Token stack[32] __attribute__((used)) = {};
+int stack_top __attribute__((used))  = -1;
 
 
 static bool make_token(char *e) {
@@ -144,8 +144,7 @@ int eval_expr(char* error){
   }
 
   int rop = -1;
-
-  // Flags
+  
   int has_r_num = 1;
   int has_r_op = 0;
   
