@@ -261,7 +261,7 @@ word_t expr(char *e, char* error) {
     return 0;
   }
 
-  // global variable
+  // Init global variable
   stack_top = -1;
 
   int expr_value = 0;
