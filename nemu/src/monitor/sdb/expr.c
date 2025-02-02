@@ -217,7 +217,6 @@ int eval_expr(char* error){
         
         /* optional quote match_end*/
         case TK_LQUOTE:
-          stack_top--;
 
           /* Op is in the end */
           if(has_r_op == 1){
