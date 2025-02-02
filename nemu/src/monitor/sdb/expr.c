@@ -143,9 +143,10 @@ int eval_expr(char* error){
     return -1;
   }
 
-  // Flags
   int rop = -1;
-  int has_r_num = 0;
+
+  // Flags
+  int has_r_num = 1;
   int has_r_op = 0;
   
   Token Num; 
