@@ -75,7 +75,7 @@ static int nr_token __attribute__((used))  = 0;
 
 /* For token_match */
 Token stack[2048]  = {};
-static int stack_top  = -1;
+int stack_top  = -1;
 
 
 static bool make_token(char *e) {
@@ -260,6 +260,9 @@ word_t expr(char *e, char* error) {
     strcat(error, "make_token failed");
     return 0;
   }
+
+  // global variable
+  stack_top = -1;
 
   int expr_value = 0;
   int quote_flag = 0;
