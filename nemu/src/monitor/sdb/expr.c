@@ -281,13 +281,10 @@ word_t expr(char *e, char* error) {
     }
   }
 
-  /* without quote */
-  if(quote_flag == 0){
-    expr_value = eval_expr(error);
-    if(expr_value == -1){
-      strcat(error, "(Without quote)");
-      return 0;
-    }
+  expr_value += eval_expr(error);
+  if(expr_value == -1){
+    strcat(error, "(Without quote)");
+    return 0;
   }
 
   Log("Expr_value = %d", expr_value);
