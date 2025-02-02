@@ -288,7 +288,7 @@ word_t expr(char *e, char* error) {
     }
   }
 
-  expr_value += eval_expr(error);
+  expr_value = eval_expr(error);
   if(expr_value == -1){
     strcat(error, "(Without quote)");
     return 0;
