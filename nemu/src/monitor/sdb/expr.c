@@ -134,7 +134,8 @@ int eval_expr(char* error){
     return -1;
   }
 
-  int rhs = atoi(stack[stack_top].str);
+  // First elem is not number
+  int rhs = atoi(stack[stack_top--].str);
 
   /* Elem in the end isn't number */
   if(rhs == 0){
@@ -142,8 +143,8 @@ int eval_expr(char* error){
     return -1;
   }
 
+  // Flags
   int rop = -1;
-
   int has_r_num = 0;
   int has_r_op = 0;
   
