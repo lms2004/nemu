@@ -227,12 +227,11 @@ int eval_expr(char* error){
           snprintf(Num.str, sizeof(Num.str), "%d", rhs);
           Num.type = TK_NUM;
           
-          stack[++stack_top] = Num;
+          stack[stack_top] = Num;
 
           Log("Quote_sub_expr_value = %d", rhs);
           return rhs; 
       }
-      stack_top--;
     }
 
     /* Op is in the end */
