@@ -128,6 +128,11 @@ static bool make_token(char *e) {
 }
 
 int eval_expr(char* error){
+  if(stack_top <= 0){
+    strcat(error, "stack is empty ");
+    return -1;
+  }
+
   int rhs = atoi(stack[stack_top].str);
 
   /* Elem in the end isn't number */
