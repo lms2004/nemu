@@ -233,6 +233,10 @@ int eval_expr(char* error){
           Log("Quote_sub_expr_value = %d", rhs);
           return rhs; 
       }
+      
+      
+      // Iter to elems 
+      stack_top--;
     }
 
     /* Op is in the end */
