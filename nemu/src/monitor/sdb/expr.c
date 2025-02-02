@@ -134,10 +134,10 @@ int eval_expr(char* error){
     return -1;
   }
 
-  // First elem is not number
+  // First elem
   int rhs = atoi(stack[stack_top--].str);
 
-  /* Elem in the end isn't number */
+  // First elem is not number
   if(rhs == 0){
     strcat(error, "Elem in the end isn't number");
     return -1;
