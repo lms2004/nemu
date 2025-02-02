@@ -128,7 +128,7 @@ static bool make_token(char *e) {
 }
 
 int eval_expr(char* error){
-  // stack_top start with -1
+  // Stack_top start with -1
   if(stack_top < 0){
     strcat(error, "stack is empty ");
     return -1;
