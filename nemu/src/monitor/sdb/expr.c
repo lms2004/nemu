@@ -135,13 +135,15 @@ int eval_expr(char* error){
   }
 
   // First elem
-  int rhs = atoi(stack[stack_top--].str);
+  char* first = stack[stack_top--].str;
+  int rhs = atoi(first);
 
   // First elem is not number
-  if(rhs == 0){
+  if(rhs == 0 && first[0] != '0'){
     strcat(error, "Elem in the end isn't number");
     return -1;
   }
+
 
   int rop = -1;
   
