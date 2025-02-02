@@ -217,14 +217,13 @@ int eval_expr(char* error){
         
         /* optional quote match_end*/
         case TK_LQUOTE:
-
           /* Op is in the end */
           if(has_r_op == 1){
             strcat(error, "op next to op OR op next to nothing");
             return -1;
           }
 
-          /* push newElem */
+          /* push newElem (replace Lquote)*/
           snprintf(Num.str, sizeof(Num.str), "%d", rhs);
           Num.type = TK_NUM;
           
