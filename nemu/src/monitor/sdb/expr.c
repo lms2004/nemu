@@ -127,7 +127,7 @@ static bool make_token(char *e) {
   return true;
 }
 
-int eval_expr(char* error){
+unsigned eval_expr(char* error){
   // Stack_top start with -1
   if(stack_top < 0){
     strcat(error, "stack is empty ");
@@ -281,7 +281,7 @@ word_t expr(char *e, char* error) {
       stack[++stack_top] = tokens[i];
     }
     else{
-      int sub_expr_value = eval_expr(error);
+      unsigned sub_expr_value = eval_expr(error);
       if(sub_expr_value == -1){
         strcat(error, "(With quote)");
         return 0;
