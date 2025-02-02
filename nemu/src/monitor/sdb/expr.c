@@ -264,7 +264,7 @@ word_t expr(char *e, char* error) {
   // Init global variable
   stack_top = -1;
 
-  int expr_value = 0;
+  unsigned expr_value = 0;
   int quote_flag = 0;
 
 
@@ -296,6 +296,6 @@ word_t expr(char *e, char* error) {
     return 0;
   }
 
-  Log("Expr_value = %d", expr_value);
+  Log("Expr_value = %u", expr_value);
   return expr_value;
 }
