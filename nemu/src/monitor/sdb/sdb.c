@@ -190,7 +190,7 @@ static int cmd_test(char* path){
   char* R_expr_value = calloc(32, sizeof(char)); 
 
   while(fscanf(fp, "%s %s", R_expr_value, args) != EOF){
-    Log(" Test case %d: %s", case_i,args);
+    Log(" Test case %d: %s", case_i, args);
 
     char* error = calloc(128, sizeof(char));
 
