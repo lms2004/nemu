@@ -190,7 +190,7 @@ static int cmd_test(char* path){
   char* R_expr_value = calloc(32, sizeof(char)); 
 
   while(fscanf(fp, "%s %s", R_expr_value, args) != EOF){
-    Log(" Test case %d: %s", case_i++,args);
+    Log(" Test case %d: %s", case_i,args);
 
     char* error = calloc(128, sizeof(char));
 
@@ -207,6 +207,7 @@ static int cmd_test(char* path){
       Error("Test_case %d: Not match: %u   %u", case_i, R_value, expr_value);
       return 0;
     }
+    case_i++;
   }
 
   return 0;
