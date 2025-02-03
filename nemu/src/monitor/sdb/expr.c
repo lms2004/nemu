@@ -116,7 +116,8 @@ static bool make_token(char *e) {
         }
 
         /* copy token_str to tokens_arr */
-        strncpy(tokens[nr_token].str, substr_start, substr_len);
+        
+        strncpy(tokens[nr_token].str, substr_start, 32);
 
         nr_token++;
         break;
