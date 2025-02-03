@@ -205,7 +205,6 @@ static int cmd_test(char* path){
       Error("Not match: %u   %u", R_value, expr_value);
       return 0;
     }
-    return 0;
   }
 
   return 0;
