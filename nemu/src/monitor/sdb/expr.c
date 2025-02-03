@@ -42,6 +42,7 @@ static struct rule {
   {"/", TK_DIV},        // div
   {"\\(", TK_LQUOTE},     // left quote
   {"\\)", TK_RQUOTE},     // right quote
+  {""}
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -88,6 +89,10 @@ static bool make_token(char *e) {
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i++) {
+      if(e[position] == '\0'){
+        break;
+      }
+
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
