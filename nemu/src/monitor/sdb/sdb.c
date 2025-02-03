@@ -181,6 +181,7 @@ static int cmd_p(char *args){
 }
 
 static int cmd_test(char* path){
+  path = "./src/monitor/sdb/test/expr_test.txt";
   Log("Test cases: %s", path);
   FILE *fp = fopen(path, "r");
   int case_i = 0;
