@@ -196,6 +196,7 @@ static int cmd_test(char* path){
 
   FILE *fp = fopen(path, "r");
   int case_i = 0;
+  int ignore = 0;
 
   char* args = calloc(2048, sizeof(char));
   char* R_expr_value = calloc(32, sizeof(char)); 
@@ -213,19 +214,23 @@ static int cmd_test(char* path){
     signal(SIGFPE, sigsegv_handler);
 
     if (0 == setjmp(env)) {
-        expr_value = expr(args, error);
+      expr_value = expr(args, error);
     } else {
-        continue;
+      case_i++;
+      ignore++;
+      continue;
     }
 
 
     if(strcmp(error, "") != 0){
       Error("Test_case %d: %s",  case_i, error);
+      Error("ignore %d cases \n",ignore);
       return 0;
     }
 
     if(R_value != expr_value){
-      Error("Test_case %d: Not match: %u   %u", case_i, R_value, expr_value);
+      Error("Test_case %d: Not match: %u   %u\n", case_i, R_value, expr_value);
+      Error("ignore %d cases \n",ignore);
       return 0;
     }
     case_i++;
