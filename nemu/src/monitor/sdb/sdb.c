@@ -189,7 +189,6 @@ static int cmd_test(char* path){
 
   while(fscanf(fp, "%s %s", R_expr_value, args) != EOF){
     Log(" Test case %s", args);
-    args = strtok(NULL, "");
 
     char* error = calloc(128, sizeof(char));
 
