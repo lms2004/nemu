@@ -248,6 +248,7 @@ int eval_expr(char* error){
 
     /* Op is in the end */
     if(has_r_op == 1){
+      strcat(error, "Op is in the end");
       return -1;
     }
   
