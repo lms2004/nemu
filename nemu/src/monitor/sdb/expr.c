@@ -71,8 +71,8 @@ typedef struct token {
   char str[32];
 } Token;
 
-Token tokens[4096]  = {};
-int nr_token  = 0;
+static Token tokens[4096] __attribute__((used)) = {};
+static int nr_token __attribute__((used))  = 0;
 
 /* For token_match */
 Token stack[4096]  = {};
