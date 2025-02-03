@@ -198,12 +198,12 @@ static int cmd_test(char* path){
     word_t expr_value = expr(args, error);
 
     if(strcmp(error, "") != 0){
-      Error("%s", error);
+      Error("Test_case %d: %s",  case_i, error);
       return 0;
     }
 
     if(R_value != expr_value){
-      Error("Not match: %u   %u", R_value, expr_value);
+      Error("Test_case %d: Not match: %u   %u", case_i, R_value, expr_value);
       return 0;
     }
   }
