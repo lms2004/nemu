@@ -49,7 +49,6 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-
 static int cmd_q(char *args) {
   return -1;
 }
@@ -62,7 +61,10 @@ static int cmd_x(char* args);
 
 static int cmd_p(char *args);
 
+static int cmd_test(char* path);
+
 static int cmd_help(char *args);
+
 
 
 static struct {
@@ -76,7 +78,8 @@ static struct {
   { "si", "Step execute", cmd_si},
   { "info", "Print program information", cmd_info},
   { "x", "Scan memory", cmd_x},
-  { "p", "eval expr", cmd_p}
+  { "p", "eval expr", cmd_p},
+  { "test", "test command", cmd_test}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -169,8 +172,41 @@ static int cmd_p(char *args){
 
   expr(args, error);
   
+
   if(strcmp(error, "") != 0){
     Error("%s", error);
+  }
+
+  return 0;
+}
+
+static int cmd_test(char* path){
+  Log("Test cases: %s", path);
+  FILE *fp = fopen(path, "r");
+
+  char* args = calloc(128, sizeof(char));
+  char* R_expr_value = calloc(32, sizeof(char)); 
+
+  while(fscanf(fp, "%s %s", R_expr_value, args) != EOF){
+    Log(" Test case %s", args);
+    args = strtok(NULL, "");
+
+    char* error = calloc(128, sizeof(char));
+
+    word_t R_value = atoi(R_expr_value);
+
+    word_t expr_value = expr(args, error);
+
+    if(strcmp(error, "") != 0){
+      Error("%s", error);
+      return 0;
+    }
+
+    if(R_value != expr_value){
+      Error("Not match: %u   %u", R_value, expr_value);
+      return 0;
+    }
+    return 0;
   }
 
   return 0;
