@@ -281,7 +281,7 @@ word_t expr(char *e, char* error) {
       stack[++stack_top] = tokens[i];
     }
     else{
-      unsigned sub_expr_value = eval_expr(error);
+      int sub_expr_value = eval_expr(error);
       if(sub_expr_value == -1){
         strcat(error, "(With quote)");
         return 0;
