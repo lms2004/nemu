@@ -288,17 +288,16 @@ word_t expr(char *e, char* error) {
     }
     else{
       int sub_expr_value = eval_expr(error);
-      if(sub_expr_value == -1){
-        strcat(error, "(With quote)");
+      if(strcmp(error, "") != 0){
         return 0;
       }
+
       expr_value += sub_expr_value;
     }
   }
 
   expr_value = eval_expr(error);
-  if(expr_value == -1){
-    strcat(error, "(Without quote)");
+  if(strcmp(error, "") != 0){
     return 0;
   }
 
