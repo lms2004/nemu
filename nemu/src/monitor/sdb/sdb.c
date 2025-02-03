@@ -186,10 +186,10 @@ static int cmd_test(char* path){
   FILE *fp = fopen(path, "r");
   int case_i = 0;
 
-  char* args = calloc(128, sizeof(char));
+  char* args = calloc(2048, sizeof(char));
   char* R_expr_value = calloc(32, sizeof(char)); 
 
-  while(fscanf(fp, "%s %s", R_expr_value, args) != EOF){
+  while(fscanf(fp, "%s %[^\n]", R_expr_value, args) != EOF){
     Log(" Test case %d: %s", case_i, args);
 
     char* error = calloc(128, sizeof(char));
