@@ -205,7 +205,7 @@ static int cmd_test(char* path){
 
   while(fscanf(fp, "%s %[^\n]%*c", R_expr_value, args) != EOF){
     Log(" Test case %d: %s", case_i, args);
-    Log("ignore %d cases \n",ignore); 
+    Log("ignore %d cases ",ignore); 
 
     char* error = calloc(128, sizeof(char));
 

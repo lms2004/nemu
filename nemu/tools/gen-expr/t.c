@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
     }
 
     if (0 == setjmp(env)) {
-        unsigned result = 1 / 0;  // Example division by zero to trigger SIGFPE
-        printf("%u", result);  // This will not be printed
+        unsigned result = ((( 72/ ( (7)))+  ((0*( ( ( ( ( ( 31/  (  ( 2)/ 90))+ (  6))- ((((  (9)))/5)* 20))/ (3))+ 16))))));  // Example division by zero to trigger SIGFPE
+        printf("%u\n", result);  // This will not be printed
     } else {
         printf("%u", 65535);  // This will be printed after handling the exception
     }

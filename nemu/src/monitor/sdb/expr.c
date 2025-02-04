@@ -305,3 +305,24 @@ word_t expr(char *e, char* error) {
   Log("Expr_value = %u", expr_value);
   return expr_value;
 }
+
+
+word_t eval(char *e, char* error, int l, int r) {
+  if(l < r){
+    return 0;
+  }
+
+  if(l == r){
+    int num = atoi(tokens[l].str);
+
+    if(num == 0 && tokens[l].str[0] != '0'){
+      strcat(error, "single elem is not number");
+      return 0;
+    }
+    
+    return num;
+  }
+}
+
+
+
