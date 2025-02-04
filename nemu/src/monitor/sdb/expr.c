@@ -307,10 +307,32 @@ word_t expr(char *e, char* error) {
 }
 
 
-word_t eval(char *e, char* error, int l, int r) {
-  if(l < r){
+
+int check_parentheses(char* str ,int* l, int* r){
+  while(str[*l]  == ' '){
+    (*l)++;
+  }
+
+  if(str[*l] != '('){
+    return 0; 
+  }
+
+  while(str[*r] == ' '){
+    (*r)--;
+  }
+
+  if(str[*r] != ')'){
     return 0;
   }
+
+  return 1;
+}
+
+
+word_t eval(char* str, char* error, int l, int r) {
+  if(l < r){
+    return 0;
+  } 
 
   if(l == r){
     int num = atoi(tokens[l].str);
@@ -322,6 +344,14 @@ word_t eval(char *e, char* error, int l, int r) {
     
     return num;
   }
+
+  if(check_parentheses(str, &l , &r)){
+    return eval(str, error, l + 1, r - 1);
+  }
+
+
+  return 0;
+
 }
 
 
