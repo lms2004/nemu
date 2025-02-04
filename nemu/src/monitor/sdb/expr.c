@@ -21,6 +21,8 @@
 #include <regex.h>
 #include <string.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <setjmp.h>
 
 enum {
   TK_NOTYPE = 256, TK_NUM, TK_PLUS, TK_SUB, 
@@ -133,6 +135,15 @@ static bool make_token(char *e) {
   return true;
 }
 
+
+jmp_buf env;
+int SIGFPE_flag = 0;
+
+void sigsegv_handler(int signal) {
+  SIGFPE_flag = 1;
+  longjmp(env, 2);
+}
+
 int eval_expr(char* error){
   // Stack_top start with -1
   if(stack_top < 0){
@@ -148,6 +159,13 @@ int eval_expr(char* error){
   if(rhs == 0 && first[0] != '0'){
     strcat(error, "Elem in the end isn't number");
     return -1;
+  }
+
+  // register SIGFPE signal
+  struct sigaction sa = {};
+  sa.sa_handler = sigsegv_handler;
+  if (sigaction(SIGFPE, &sa, NULL) == -1) {
+      perror("sigaction");
   }
 
 
@@ -200,7 +218,17 @@ int eval_expr(char* error){
                 rhs = lnum * rhs;
                 break;
               case TK_DIV:
-                rhs = lnum / rhs;
+
+                /* catch SIGFPE signal */
+                if(setjmp(env) == 0){
+                  rhs = lnum / rhs;
+                }else{
+                  if(SIGFPE_flag == 1){
+                    strcat(error, "Divide by zero");
+                    return -1;
+                  }
+                }
+
                 break;
             }
           }

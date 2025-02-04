@@ -17,10 +17,6 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <stdio.h>
-#include <signal.h>
-#include <setjmp.h>
-#include <stdlib.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -192,15 +188,11 @@ static int cmd_p1(char *args){
 }
 
 
-
-jmp_buf env;
-void sigsegv_handler(int signal) {
-    longjmp(env, 2);
-}
-
 static int cmd_test(char* path){
   path = "./src/monitor/sdb/test/expr_test.txt";
   Log("Test cases: %s", path);
+
+  extern int SIGFPE_flag;
 
   FILE *fp = fopen(path, "r");
   int case_i = 0;
@@ -210,12 +202,6 @@ static int cmd_test(char* path){
   char* args = calloc(2048, sizeof(char));
   char* R_expr_value = calloc(32, sizeof(char)); 
 
-  // register SIGFPE signal
-  struct sigaction sa = {};
-  sa.sa_handler = sigsegv_handler;
-  if (sigaction(SIGFPE, &sa, NULL) == -1) {
-      perror("sigaction");
-  }
 
   while(fscanf(fp, "%s %[^\n]%*c", R_expr_value, args) != EOF){
     Log(" Test case %d: %s", case_i, args);
@@ -226,14 +212,13 @@ static int cmd_test(char* path){
     word_t R_value = atoi(R_expr_value);
     word_t expr_value;
 
-    if (0 == setjmp(env)) {
-      expr_value = expr(args, error);
-    } else {
-      case_i++;
+    expr_value = expr(args, error);
+
+    if(SIGFPE_flag == 1){
       ignore++;
+      SIGFPE_flag = 0;
       continue;
     }
-
 
     if(strcmp(error, "") != 0){
       Error("Test_case %d: %s",  case_i, error);
