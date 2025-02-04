@@ -140,6 +140,7 @@ jmp_buf env;
 int SIGFPE_flag = 0;
 
 void sigsegv_handler(int signal) {
+  printf("SIGFPE signal\n");
   SIGFPE_flag = 1;
   longjmp(env, 2);
 }
