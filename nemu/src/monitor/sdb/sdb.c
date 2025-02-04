@@ -216,6 +216,7 @@ static int cmd_test(char* path){
 
     if(SIGFPE_flag == 1){
       ignore++;
+      case_i++;
       SIGFPE_flag = 0;
       continue;
     }
