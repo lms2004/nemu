@@ -165,6 +165,8 @@ int eval_expr(char* error){
   // register SIGFPE signal
   struct sigaction sa = {};
   sa.sa_handler = sigsegv_handler;
+  memset(&sa, 0, sizeof(sa));
+  sa.sa_flags = SA_NODEFER;
   if (sigaction(SIGFPE, &sa, NULL) == -1) {
       perror("sigaction");
   }
