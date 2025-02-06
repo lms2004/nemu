@@ -222,7 +222,7 @@ int eval_expr(char* error){
               case TK_DIV:
 
                 /* catch SIGFPE signal */
-                if(setjmp(env) == 0){
+                if(0 == setjmp(env)){
                   rhs = lnum / rhs;
                 }else{
                   if(SIGFPE_flag == 1){
