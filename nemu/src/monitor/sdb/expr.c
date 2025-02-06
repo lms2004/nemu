@@ -142,7 +142,7 @@ int SIGFPE_flag = 0;
 void sigsegv_handler(int signal) {
   printf("SIGFPE signal\n");
   SIGFPE_flag = 1;
-  longjmp(env, 2);
+  longjmp(env, 1);
 }
 
 int eval_expr(char* error){
@@ -161,16 +161,6 @@ int eval_expr(char* error){
     strcat(error, "Elem in the end isn't number");
     return -1;
   }
-
-  // register SIGFPE signal
-  struct sigaction sa = {};
-  sa.sa_handler = sigsegv_handler;
-  memset(&sa, 0, sizeof(sa));
-  sa.sa_flags = SA_NODEFER;
-  if (sigaction(SIGFPE, &sa, NULL) == -1) {
-      perror("sigaction");
-  }
-
 
   int rop = -1;
   
@@ -199,6 +189,15 @@ int eval_expr(char* error){
   */ 
 
   while(stack_top >= 0){
+      // register SIGFPE signal
+      struct sigaction sa = {};
+      sa.sa_handler = sigsegv_handler;
+      memset(&sa, 0, sizeof(sa));
+      sa.sa_flags = SA_NODEFER;
+      if (sigaction(SIGFPE, &sa, NULL) == -1) {
+          perror("sigaction");
+      }
+
       switch(stack[stack_top].type){
         case TK_NUM:
 
