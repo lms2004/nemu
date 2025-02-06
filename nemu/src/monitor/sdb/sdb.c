@@ -63,7 +63,7 @@ static int cmd_p(char *args);
 
 static int cmd_p1(char *args);
 
-static int cmd_test(char* path);
+static int cmd_test(char *arg);
 
 static int cmd_help(char *args);
 
@@ -188,13 +188,30 @@ static int cmd_p1(char *args){
 }
 
 
-static int cmd_test(char* path){
-  path = "./src/monitor/sdb/test/expr_test.txt";
+static int cmd_test(char *arg){
+  arg = strtok(NULL, " ");
+
+
+  char* path = "./src/monitor/sdb/test/expr_test.txt";
   Log("Test cases: %s", path);
 
   extern int SIGFPE_flag;
 
   FILE *fp = fopen(path, "r");
+
+  /* start to read */
+  int spec = 0;
+  if(arg != NULL){
+    spec = atoi(arg);
+  }
+
+  char buffer[4048];
+  while(0 < spec && fgets(buffer, 4048, fp) != NULL){
+    spec--;
+  }
+
+
+  // count cases
   int case_i = 0;
   int ignore = 0;
 
