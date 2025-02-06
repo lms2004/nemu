@@ -205,15 +205,17 @@ static int cmd_test(char *arg){
     spec = atoi(arg);
   }
 
+  // count cases
+  int case_i = spec;
+  int ignore = 0;
+
+
   char buffer[4048];
   while(0 < spec && fgets(buffer, 4048, fp) != NULL){
     spec--;
   }
 
 
-  // count cases
-  int case_i = 0;
-  int ignore = 0;
 
   // Store expr and value
   char* args = calloc(2048, sizeof(char));
