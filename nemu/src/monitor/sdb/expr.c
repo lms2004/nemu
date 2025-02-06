@@ -191,9 +191,9 @@ int eval_expr(char* error){
   while(stack_top >= 0){
       // register SIGFPE signal
       struct sigaction sa = {};
-      sa.sa_handler = sigsegv_handler;
       memset(&sa, 0, sizeof(sa));
       sa.sa_flags = SA_NODEFER;
+      sa.sa_handler = sigsegv_handler;
       if (sigaction(SIGFPE, &sa, NULL) == -1) {
           perror("sigaction");
       }
