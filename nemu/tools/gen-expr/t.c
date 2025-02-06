@@ -55,7 +55,7 @@ void handler(int signum)
 
 int main()
 {
-    volatile int i, j;
+    int i, j;
     for(i = 0; i < 10; i++) 
     {
         // Call signal handler for SIGFPE
