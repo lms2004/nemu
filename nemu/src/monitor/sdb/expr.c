@@ -337,7 +337,7 @@ word_t expr(char *e, char* error) {
       if(!space_flag && sub_flag){
         char str[32] = "-";
         strcat(str, tokens[i].str);
-        strncpy(tokens[nr_token].str, str, 32);
+        strncpy(tokens[i].str, str, 32);
         // replace the sub_op
         stack[stack_top] = tokens[i]; 
       }else{
