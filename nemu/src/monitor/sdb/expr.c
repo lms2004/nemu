@@ -72,7 +72,7 @@ void init_regex() {
 
 typedef struct token {
   int type;
-  char str[64];
+  char str[32];
 } Token;
 
 static Token tokens[8192] __attribute__((used)) = {};
@@ -338,9 +338,9 @@ word_t expr(char *e, char* error) {
       break;
     case TK_NUM:
       if(!space_flag && sub_flag){
-        char str[32] = "-";
+        char str[128] = "-";
         strcat(str, tokens[i].str);
-        strncpy(tokens[i].str, str, 32);
+        strncpy(tokens[i].str, str, 64);
         // replace the sub_op
         stack[stack_top] = tokens[i]; 
       }else{
