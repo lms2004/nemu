@@ -105,11 +105,7 @@ static bool make_token(char *e) {
         position += substr_len;
 
         switch (rules[i].token_type) {
-          case TK_NOTYPE: 
-          if(nr_token > 0 && tokens[nr_token - 1].type == TK_NOTYPE){
-            continue;
-          }
-          tokens[nr_token].type = TK_NOTYPE; break;
+          case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE; break;
           case TK_NUM: tokens[nr_token].type = TK_NUM; break;
           case TK_PLUS: tokens[nr_token].type = TK_PLUS; break;
           case TK_SUB: tokens[nr_token].type = TK_SUB; break;
@@ -308,6 +304,8 @@ word_t expr(char *e, char* error) {
   unsigned expr_value = 0;
   int quote_flag = 0;
 
+  int sub_flag = 0;
+  int space_flag = 0;
 
   /* With quote */
   for(int i = 0;i < nr_token;i++){
@@ -318,17 +316,48 @@ word_t expr(char *e, char* error) {
     }
 
     /* not Rquote into stack */
-    if(tokens[i].type != TK_RQUOTE){
-      stack[++stack_top] = tokens[i];
-    }
-    else{
+    switch (tokens[i].type)
+    {
+    case TK_NOTYPE:
+      space_flag = 1;
+      break;
+    case TK_RQUOTE:
       int sub_expr_value = eval_expr(error);
       if(strcmp(error, "") != 0){
         return 0;
       }
 
       expr_value += sub_expr_value;
+      
+      /* reset */
+      sub_flag = 0;
+      space_flag = 0;
+      break;
+    case TK_NUM:
+      if(!space_flag && sub_flag){
+        char str[32] = "-";
+        strcat(str, tokens[i].str);
+        strncpy(tokens[nr_token].str, str, 32);
+        stack[++stack_top] = tokens[i];
+      }
+
+      /* reset */
+      sub_flag = 0;
+      space_flag = 0;
+      break;
+    case TK_SUB:
+      sub_flag = 1;
+      stack[++stack_top] = tokens[i];
+      break;
+    default:
+      stack[++stack_top] = tokens[i];
+
+      /* reset */
+      sub_flag = 0;
+      space_flag = 0;
+      break;
     }
+
   }
 
   expr_value = eval_expr(error);
