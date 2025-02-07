@@ -338,8 +338,12 @@ word_t expr(char *e, char* error) {
         char str[32] = "-";
         strcat(str, tokens[i].str);
         strncpy(tokens[nr_token].str, str, 32);
+        
+        // replace the sub_op
+        stack[stack_top] = tokens[i]; 
+      }else{
+        stack[++stack_top] = tokens[i]; 
       }
-      stack[++stack_top] = tokens[i]; 
 
       /* reset */
       sub_flag = 0;
