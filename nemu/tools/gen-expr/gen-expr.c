@@ -58,7 +58,12 @@ static void gen(char c) {
 
 static void gen_num() {
   int f = rand() % 10;
+  int minus = rand() % 2;
   if (f != 0) {
+    if(minus){
+      buf[buf_i++] = '(';
+      buf[buf_i++] = '-';
+    }
     buf[buf_i++] = f + '0';
   }else{
     gen('0');
@@ -67,6 +72,9 @@ static void gen_num() {
 
   for (int i = 0; i < rand() % 2; i++) {
     buf[buf_i++] = rand() % 10 + '0';
+  }
+  if(minus){
+    buf[buf_i++] = ')';
   }
 }
 
@@ -77,6 +85,7 @@ static void gen_space() {
 }
 
 static void gen_op() {
+  buf[buf_i++] = ' ';
   switch (rand() % 4) {
     case 0:
       buf[buf_i] = '+';
