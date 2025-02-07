@@ -120,10 +120,7 @@ static bool make_token(char *e) {
         }
 
         /* copy token_str to tokens_arr */
-        strncpy(tokens[nr_token].str, substr_start, sizeof(tokens[nr_token].str) - 1);
-        tokens[nr_token].str[sizeof(tokens[nr_token].str) - 1] = '\0';
-
-
+        strncpy(tokens[nr_token].str, substr_start, 32);
         nr_token++;
         break;
       }
@@ -338,9 +335,9 @@ word_t expr(char *e, char* error) {
       break;
     case TK_NUM:
       if(!space_flag && sub_flag){
-        char str[128] = "-";
+        char str[64] = "-";
         strcat(str, tokens[i].str);
-        strncpy(tokens[i].str, str, 64);
+        strncpy(tokens[i].str, str, 32);
         // replace the sub_op
         stack[stack_top] = tokens[i]; 
       }else{
