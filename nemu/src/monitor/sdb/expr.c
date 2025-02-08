@@ -28,7 +28,7 @@ enum {
   TK_NOTYPE = 256, TK_NUM, TK_PLUS, TK_SUB, 
   TK_MUL, TK_DIV, TK_EQ, TK_LQUOTE, TK_RQUOTE,
   
-  TK_DOLLAR,
+  TK_REG, TK_NEQ, TK_AND, TK_ADDR, TK_HEX
 
 };
 
@@ -39,14 +39,18 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", TK_PLUS},     // plus
-  {"==", TK_EQ},        // equal
   {"[0-9]+", TK_NUM},     // number
   {"-", TK_SUB},        // sub
   {"\\*", TK_MUL},      // mul
   {"/", TK_DIV},        // div
   {"\\(", TK_LQUOTE},     // left quote
   {"\\)", TK_RQUOTE},     // right quote
-  {"$", TK_DOLLAR},
+
+  {"$[a-zA-Z]+", TK_REG},
+  {"!=", TK_NEQ},
+  {"==", TK_EQ},        // equal
+  {"&&", TK_AND},
+  {"0x[0-9a-fA-F]+", TK_HEX},
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -116,6 +120,11 @@ static bool make_token(char *e) {
           case TK_EQ: tokens[nr_token].type = TK_EQ; break;
           case TK_LQUOTE: tokens[nr_token].type = TK_LQUOTE; break;
           case TK_RQUOTE: tokens[nr_token].type = TK_RQUOTE; break;
+          case TK_REG: tokens[nr_token].type = TK_REG; break;
+          case TK_NEQ: tokens[nr_token].type = TK_NEQ; break;
+          case TK_AND: tokens[nr_token].type = TK_AND; break;
+          case TK_HEX: tokens[nr_token].type = TK_HEX; break;
+          case TK_ADDR: tokens[nr_token].type = TK_ADDR; break;
           default: printf("Unknow token type\n"); return false;
         }
 
@@ -240,7 +249,7 @@ int eval_expr(char* error){
           has_r_op = 0;
           break;
         case TK_PLUS: case TK_DIV: case TK_MUL: case TK_SUB:
-
+          /* Wrong expr */
           if(has_r_num == 0 || has_r_op == 1){
             strcat(error, "op next to op OR op next to nothing");
             return -1;
@@ -255,7 +264,7 @@ int eval_expr(char* error){
         
         /* optional quote match_end*/
         case TK_LQUOTE:
-          /* Op is in the end */
+          /* Wrong expr */
           if(has_r_op == 1){
             strcat(error, "op next to op OR op next to nothing");
             return -1;
@@ -276,7 +285,7 @@ int eval_expr(char* error){
       stack_top--;
     }
 
-    /* Op is in the end */
+    /* Wrong expr */
     if(has_r_op == 1){
       strcat(error, "Op is in the end");
       return -1;
@@ -358,9 +367,14 @@ word_t expr(char *e, char* error) {
   return expr_value;
 }
 
-// word_t wp_expr(char *e, char* error){
-  
-// }
+word_t wp_expr(char *e, char* error){
+  if (!make_token(e)) {
+    strcat(error, "make_token failed");
+    return 0;
+  }
+
+  return 0;
+}
 
 
 
