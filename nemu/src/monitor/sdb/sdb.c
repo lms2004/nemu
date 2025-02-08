@@ -210,15 +210,15 @@ static int cmd_test(char *arg){
   int ignore = 0;
 
 
-  char buffer[4048];
-  while(0 < spec && fgets(buffer, 4048, fp) != NULL){
+  char buffer[4096];
+  while(0 < spec && fgets(buffer, 4096, fp) != NULL){
     spec--;
   }
 
 
 
   // Store expr and value
-  char* args = calloc(2048, sizeof(char));
+  char* args = calloc(4096, sizeof(char));
   char* R_expr_value = calloc(32, sizeof(char)); 
 
 
