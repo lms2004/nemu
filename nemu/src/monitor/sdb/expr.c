@@ -146,7 +146,7 @@ void sigsegv_handler(int signal) {
 }
 
 int eval_expr(char* error){
-  // Stack_top start with -1
+  /* Wrong expr */
   if(stack_top < 0){
     strcat(error, "stack is empty ");
     return -1;
@@ -200,7 +200,7 @@ int eval_expr(char* error){
 
       switch(stack[stack_top].type){
         case TK_NUM:
-
+          /* Wrong expr */
           if(has_r_num == 1){
             strcat(error, "num next to num");
             return -1;
@@ -320,7 +320,11 @@ word_t expr(char *e, char* error) {
     {
     case TK_NOTYPE:
       space_flag = 1;
-      break;
+      continue;;
+    case TK_SUB:
+      sub_flag = 1;
+      stack[++stack_top] = tokens[i];
+      continue;
     case TK_RQUOTE:
       int sub_expr_value = eval_expr(error);
       if(strcmp(error, "") != 0){
@@ -347,10 +351,6 @@ word_t expr(char *e, char* error) {
       /* reset */
       sub_flag = 0;
       space_flag = 0;
-      break;
-    case TK_SUB:
-      sub_flag = 1;
-      stack[++stack_top] = tokens[i];
       break;
     default:
       stack[++stack_top] = tokens[i];
