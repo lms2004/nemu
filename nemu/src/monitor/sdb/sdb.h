@@ -19,5 +19,6 @@
 #include <common.h>
 
 word_t expr(char *e, char* error);
+word_t wp_expr(char *e, char* error);
 
 #endif

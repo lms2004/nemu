@@ -174,7 +174,6 @@ static int cmd_p(char *args){
   char* error = calloc(128, sizeof(char));
 
   expr(args, error);
-  
 
   if(strcmp(error, "") != 0){
     Error("%s", error);
@@ -184,6 +183,21 @@ static int cmd_p(char *args){
 }
 
 static int cmd_p1(char *args){
+  if(args == NULL){
+    /* no argument given */
+    printf("p command:  eg. p (expr) \n");
+    return 0;
+  }
+  args = strtok(NULL, "");
+
+  char* error = calloc(128, sizeof(char));
+
+  wp_expr(args, error);
+
+  if(strcmp(error, "") != 0){
+    Error("%s", error);
+  }
+
   return 0;
 }
 
