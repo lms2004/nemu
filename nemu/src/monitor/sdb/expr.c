@@ -302,20 +302,13 @@ word_t expr(char *e, char* error) {
   stack_top = -1;
 
   unsigned expr_value = 0;
-  int quote_flag = 0;
 
   int sub_flag = 0;
   int space_flag = 0;
 
   /* With quote */
   for(int i = 0;i < nr_token;i++){
-
-    /* quote_flag */
-    if(quote_flag == 0 && tokens[i].type == TK_LQUOTE){
-      quote_flag = 1;
-    }
-
-    /* not Rquote into stack */
+    /* match elem */
     switch (tokens[i].type)
     {
     case TK_NOTYPE:
@@ -333,9 +326,6 @@ word_t expr(char *e, char* error) {
 
       expr_value += sub_expr_value;
       
-      /* reset */
-      sub_flag = 0;
-      space_flag = 0;
       break;
     case TK_NUM:
       if(!space_flag && sub_flag){
@@ -348,19 +338,15 @@ word_t expr(char *e, char* error) {
         stack[++stack_top] = tokens[i]; 
       }
 
-      /* reset */
-      sub_flag = 0;
-      space_flag = 0;
       break;
     default:
       stack[++stack_top] = tokens[i];
 
-      /* reset */
-      sub_flag = 0;
-      space_flag = 0;
       break;
     }
-
+    /* reset */
+    sub_flag = 0;
+    space_flag = 0;
   }
 
   expr_value = eval_expr(error);
