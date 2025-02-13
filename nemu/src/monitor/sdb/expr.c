@@ -377,7 +377,7 @@ int check_parentheses(int l, int r){
 
 
 word_t eval(char* error, int l, int r) {
-  if(l < r){
+  if(l > r){
     return 0;
   } 
   else if(l == r){
