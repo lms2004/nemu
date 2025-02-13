@@ -315,7 +315,6 @@ word_t expr(char *e, char* error) {
   int sub_flag = 0;
   int space_flag = 0;
 
-  /* With quote */
   for(int i = 0;i < nr_token;i++){
     /* match elem */
     switch (tokens[i].type)
@@ -367,62 +366,69 @@ word_t expr(char *e, char* error) {
   return expr_value;
 }
 
+
+int check_parentheses(int l, int r){
+  if(tokens[l].type != TK_LQUOTE || tokens[r].type != TK_RQUOTE){
+    return 0;
+  }
+
+  return 1;
+}
+
+
+word_t eval(char* error, int l, int r) {
+  if(l < r){
+    return 0;
+  } 
+  else if(l == r){
+    int num = atoi(tokens[l].str);
+
+    if(num == 0 && tokens[l].str[0] != '0'){
+      strcat(error, "single elem is not number");
+      return 0;
+    }
+    return num;
+  }
+  else if(check_parentheses(l , r)){
+    return eval(error, l + 1, r - 1);
+  }else{
+    for(int i = l;i <= r;i++){
+      int op = tokens[i].type;
+      if(op == TK_PLUS || op == TK_SUB || op == TK_MUL || op == TK_DIV){
+        int val1 = eval(error, l, i - 1);
+        int val2 = eval(error, i + 1, r);
+
+        switch (op)
+        {
+        case TK_PLUS:
+          return val1 + val2;
+        case TK_SUB:
+          return val1 - val2;
+        case TK_MUL:
+          return val1 * val2;
+        case TK_DIV:
+          return val1 / val2;
+        default:
+          assert(0);
+        }
+      }
+    }
+  }
+  return 0;
+}
+
+
 word_t wp_expr(char *e, char* error){
   if (!make_token(e)) {
     strcat(error, "make_token failed");
     return 0;
   }
-
-  return 0;
+  word_t expr_value = eval(error, 0, nr_token - 1);
+  Log("Expr_value = %u", expr_value);
+  return expr_value;
 }
 
 
-
-// int check_parentheses(char* str ,int* l, int* r){
-//   while(str[*l]  == ' '){
-//     (*l)++;
-//   }
-
-//   if(str[*l] != '('){
-//     return 0; 
-//   }
-
-//   while(str[*r] == ' '){
-//     (*r)--;
-//   }
-
-//   if(str[*r] != ')'){
-//     return 0;
-//   }
-
-//   return 1;
-// }
-
-
-// word_t eval(char* str, char* error, int l, int r) {
-//   if(l < r){
-//     return 0;
-//   } 
-
-//   if(l == r){
-//     int num = atoi(tokens[l].str);
-
-//     if(num == 0 && tokens[l].str[0] != '0'){
-//       strcat(error, "single elem is not number");
-//       return 0;
-//     }
-    
-//     return num;
-//   }
-
-//   if(check_parentheses(str, &l , &r)){
-//     return eval(str, error, l + 1, r - 1);
-//   }
-
-
-//   return 0;
-
-// }
 
 
 
