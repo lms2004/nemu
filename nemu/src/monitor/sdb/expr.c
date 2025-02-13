@@ -403,10 +403,10 @@ word_t eval(char* error, int l, int r) {
   // 
   else{
     if(tokens[l].type == TK_NOTYPE){
-      l++;
+      return eval(error, l + 1, r);
     }
     if(tokens[r].type == TK_NOTYPE){
-      r--;
+      return eval(error, l, r - 1);
     }
 
     for(int i = l;i <= r;i++){
