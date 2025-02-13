@@ -367,15 +367,9 @@ word_t expr(char *e, char* error) {
 }
 
 
-int check_parentheses(int* l, int* r){
-  if(tokens[*l].type == TK_NOTYPE){
-    (*l)++;
-  }
-  if(tokens[*r].type == TK_NOTYPE){
-    (*r)--;
-  }
+int check_parentheses(int l, int r){
 
-  if(tokens[*l].type != TK_LQUOTE || tokens[*r].type != TK_RQUOTE){
+  if(tokens[l].type != TK_LQUOTE || tokens[r].type != TK_RQUOTE){
     return 0;
   }
 
@@ -396,11 +390,9 @@ word_t eval(char* error, int l, int r) {
     }
     return num;
   }
-  else if(check_parentheses(&l , &r)){
+  else if(check_parentheses(l , r)){
     return eval(error, l + 1, r - 1);
   }
-  // not parentheses
-  // 
   else{
     if(tokens[l].type == TK_NOTYPE){
       return eval(error, l + 1, r);
