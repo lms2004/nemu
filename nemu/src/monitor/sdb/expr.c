@@ -424,6 +424,11 @@ word_t wp_expr(char *e, char* error){
     return 0;
   }
   word_t expr_value = eval(error, 0, nr_token - 1);
+
+  if(strcmp(error, "") != 0){
+    return 0;
+  }
+  
   Log("Expr_value = %u", expr_value);
   return expr_value;
 }
