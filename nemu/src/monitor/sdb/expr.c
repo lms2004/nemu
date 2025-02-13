@@ -406,8 +406,8 @@ word_t eval(char* error, int l, int r) {
       if(op == TK_PLUS || op == TK_SUB || op == TK_MUL || op == TK_DIV){
         int val1 = eval(error, l, i - 1);
         int val2 = eval(error, i + 1, r);
-        Log("Sub_expr_value = %d", val1);
-        Log("Sub_expr_value = %d", val2);
+        Log("Sub_expr_L = %d", val1);
+        Log("Sub_expr_R = %d", val2);
         switch (op)
         {
         case TK_PLUS:
