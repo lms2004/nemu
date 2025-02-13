@@ -398,7 +398,17 @@ word_t eval(char* error, int l, int r) {
   }
   else if(check_parentheses(&l , &r)){
     return eval(error, l + 1, r - 1);
-  }else{
+  }
+  // not parentheses
+  // 
+  else{
+    if(tokens[l].type == TK_NOTYPE){
+      l++;
+    }
+    if(tokens[r].type == TK_NOTYPE){
+      r--;
+    }
+
     for(int i = l;i <= r;i++){
       int op = tokens[i].type;
       if(op == TK_PLUS || op == TK_SUB || op == TK_MUL || op == TK_DIV){
@@ -421,6 +431,7 @@ word_t eval(char* error, int l, int r) {
       }
     }
   }
+
   return 0;
 }
 
