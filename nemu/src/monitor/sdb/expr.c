@@ -111,7 +111,7 @@ static bool make_token(char *e) {
         position += substr_len;
 
         switch (rules[i].token_type) {
-          case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE; break;
+          case TK_NOTYPE: continue;
           case TK_NUM: tokens[nr_token].type = TK_NUM; break;
           case TK_PLUS: tokens[nr_token].type = TK_PLUS; break;
           case TK_SUB: tokens[nr_token].type = TK_SUB; break;
@@ -372,7 +372,7 @@ int check_parentheses(int l, int r){
   if(tokens[l].type != TK_LQUOTE || tokens[r].type != TK_RQUOTE){
     return 0;
   }
-
+  
   return 1;
 }
 
@@ -403,24 +403,32 @@ word_t eval(char* error, int l, int r) {
 
     for(int i = l;i <= r;i++){
       int op = tokens[i].type;
-      if(op == TK_PLUS || op == TK_SUB || op == TK_MUL || op == TK_DIV){
+      if(op == TK_PLUS || op == TK_MUL || op == TK_DIV){
         int val1 = eval(error, l, i - 1);
         int val2 = eval(error, i + 1, r);
+        
         Log("Sub_expr_L = %d", val1);
         Log("Sub_expr_R = %d", val2);
+        int sub_expr_value;
         switch (op)
         {
         case TK_PLUS:
-          return val1 + val2;
-        case TK_SUB:
-          return val1 - val2;
+          sub_expr_value = val1 + val2;
+          break;
         case TK_MUL:
-          return val1 * val2;
+          sub_expr_value = val1 * val2;
+          break;
         case TK_DIV:
-          return val1 / val2;
+          sub_expr_value = val1 / val2;
+          break;
+        case TK_SUB:
+          sub_expr_value = val1 - val2;
+          break;
         default:
           assert(0);
         }
+        Log("Sub_expr_value = %d", sub_expr_value);
+        return sub_expr_value;
       }
     }
   }
