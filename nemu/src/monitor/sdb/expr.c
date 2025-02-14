@@ -441,7 +441,7 @@ word_t eval(char* error, int l, int r) {
         continue;
       }
 
-      if(!match && (op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB)){
+      if(!match && (op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB || TK_AND || TK_NEQ || TK_EQ)){
         int val1 = eval(error, l, i - 1);
         int val2 = eval(error, i + 1, r);
         
@@ -459,6 +459,15 @@ word_t eval(char* error, int l, int r) {
           break;
         case TK_SUB:
           sub_expr_value = val1 - val2;
+          break;
+        case TK_EQ:
+          sub_expr_value = val1 == val2;
+          break;
+        case TK_NEQ:
+          sub_expr_value = val1 != val2;
+          break;
+        case TK_AND:
+          sub_expr_value = val1 && val2;
           break;
         default:
           assert(0);

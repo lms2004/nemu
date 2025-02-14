@@ -56,23 +56,7 @@ void handler(int signum)
 int main()
 {
     int i, j;
-    for(i = 0; i < 10; i++) 
-    {
-        // Call signal handler for SIGFPE
-        struct sigaction act;
-        memset(&act, 0, sizeof(act));
-        act.sa_handler = handler;
-        act.sa_flags = SA_NODEFER;
-        sigaction(SIGFPE, &act, NULL);
-
-        if (0 == setjmp(fpe))
-        {
-            printf("%d\n", ( 35+((  (1)*  ( ( (  (3+ ( ( 6)))))/ ( (  ( 1))/  ( 36)))))));
-        } else {
-        }
-    }
-
-    printf("After for loop");
+    printf("%d", 0x1);
 
     return 0;
 }

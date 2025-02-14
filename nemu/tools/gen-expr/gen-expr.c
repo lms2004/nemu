@@ -59,6 +59,16 @@ static void gen(char c) {
 static void gen_num() {
   int f = rand() % 10;
   int minus = rand() % 2;
+  int Ishex = rand() % 2;
+  if(Ishex){
+    buf[buf_i++] = '0';
+    buf[buf_i++] = 'x';
+    for (int i = 0; i < rand() % 2 + 1; i++) {
+      buf[buf_i++] = rand() % 16 < 10 ? rand() % 10 + '0' : rand() % 6 + 'a';
+    }
+    return ;
+  }
+
   if (f != 0) {
     if(minus){
       buf[buf_i++] = '(';
@@ -86,7 +96,7 @@ static void gen_space() {
 
 static void gen_op() {
   buf[buf_i++] = ' ';
-  switch (rand() % 4) {
+  switch (rand() % 8) {
     case 0:
       buf[buf_i] = '+';
       break;
@@ -96,6 +106,18 @@ static void gen_op() {
     case 2:
       buf[buf_i] = '*';
       break;
+    case 3:
+      buf[buf_i++] = '=';
+      buf[buf_i] = '=';
+      break;
+    case 4:
+      buf[buf_i++] = '!';
+      buf[buf_i] = '=';
+      break;
+    case 5:
+      buf[buf_i++] = '&';
+      buf[buf_i] = '&';
+      break;
     default:
       buf[buf_i] = '/';
       break;
@@ -104,7 +126,7 @@ static void gen_op() {
 }
 
 static void gen_rand_expr() {
-  if (buf_i > 3000) {
+  if (buf_i > 20) {
     gen_num();
     return;
   }
