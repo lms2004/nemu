@@ -24,12 +24,20 @@
 #include <signal.h>
 #include <setjmp.h>
 
-enum {
-  TK_NOTYPE = 256, TK_NUM, TK_PLUS, TK_SUB, 
-  TK_MUL, TK_DIV, TK_EQ, TK_LQUOTE, TK_RQUOTE,
-  
-  TK_REG, TK_NEQ, TK_AND, TK_ADDR, TK_HEX
 
+/* Implement the following function */
+word_t vaddr_read(vaddr_t addr, int len);
+
+enum {
+  // Object
+  TK_NOTYPE = 256, TK_NUM, TK_ADDR, TK_HEX, TK_REG,
+  
+  // Operator
+  TK_PLUS, TK_SUB, TK_MUL, TK_DIV,
+  TK_EQ, TK_MINUS, TK_DEREF, TK_NEQ, TK_AND, 
+  
+  // Quote
+  TK_LQUOTE, TK_RQUOTE,
 };
 
 static struct rule {
@@ -401,14 +409,20 @@ word_t eval(char* error, int l, int r) {
       return eval(error, l, r - 1);
     }
 
+    if(tokens[l].type == TK_MINUS){
+      return 0 - eval(error, l + 1, r);
+    }
+
+    if(tokens[l].type == TK_DEREF){
+      return vaddr_read(eval(error, l + 1, r), 4);
+    }
+
     for(int i = l;i <= r;i++){
       int op = tokens[i].type;
-      if(op == TK_PLUS || op == TK_MUL || op == TK_DIV){
+      if(op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB){
         int val1 = eval(error, l, i - 1);
         int val2 = eval(error, i + 1, r);
         
-        Log("Sub_expr_L = %d", val1);
-        Log("Sub_expr_R = %d", val2);
         int sub_expr_value;
         switch (op)
         {
@@ -442,6 +456,20 @@ word_t wp_expr(char *e, char* error){
     strcat(error, "make_token failed");
     return 0;
   }
+
+  for(int i = 0;i < nr_token;i++){
+    int IsOp = (i == 0 || (TK_PLUS <= tokens[i - 1].type && tokens[i - 1].type <= TK_AND));
+    
+    if (tokens[i].type == TK_MUL && IsOp)  {
+      tokens[i].type = TK_DEREF;
+    }
+
+    if (tokens[i].type == TK_SUB && IsOp){
+      tokens[i].type = TK_MINUS;
+    }
+  }
+
+
   word_t expr_value = eval(error, 0, nr_token - 1);
 
   if(strcmp(error, "") != 0){
