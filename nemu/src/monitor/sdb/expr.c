@@ -402,6 +402,15 @@ word_t eval(char* error, int l, int r) {
     return eval(error, l + 1, r - 1);
   }
   else{
+    switch (tokens[l].type)
+    {
+    case constant expression:
+      /* code */
+      break;
+    
+    default:
+      break;
+    }
     if(tokens[l].type == TK_NOTYPE){
       return eval(error, l + 1, r);
     }
@@ -410,6 +419,9 @@ word_t eval(char* error, int l, int r) {
     }
 
     if(tokens[l].type == TK_MINUS){
+      if(l + 1 < r && tokens[l + 1].type == TK_NUM){
+        return 0 - atoi(tokens[l + 1].str) + eval(error, l + 2, r);
+      }
       return 0 - eval(error, l + 1, r);
     }
 
@@ -459,7 +471,7 @@ word_t wp_expr(char *e, char* error){
 
   for(int i = 0;i < nr_token;i++){
     int IsOp = (i == 0 || (TK_PLUS <= tokens[i - 1].type && tokens[i - 1].type <= TK_AND));
-    
+
     if (tokens[i].type == TK_MUL && IsOp)  {
       tokens[i].type = TK_DEREF;
     }
