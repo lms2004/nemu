@@ -119,7 +119,7 @@ static bool make_token(char *e) {
         position += substr_len;
 
         switch (rules[i].token_type) {
-          case TK_NOTYPE: continue;
+          case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE;break;
           case TK_NUM: tokens[nr_token].type = TK_NUM; break;
           case TK_PLUS: tokens[nr_token].type = TK_PLUS; break;
           case TK_SUB: tokens[nr_token].type = TK_SUB; break;
@@ -418,6 +418,14 @@ word_t eval(char* error, int l, int r) {
     return eval(error, l + 1, r - 1);
   }
   else{
+    if(tokens[l].type == TK_NOTYPE){
+      return eval(error, l + 1, r);
+    }
+
+    if(tokens[r].type == TK_NOTYPE){
+      return eval(error, l, r - 1);
+    }
+
     /* Find op */
     for(int i = l;i <= r;i++){
       int op = tokens[i].type;
