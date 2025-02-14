@@ -411,7 +411,7 @@ word_t eval(char* error, int l, int r) {
       char *endptr;
       num = strtol(tokens[l].str, &endptr, 16);
   
-      if (*endptr == '\0') {
+      if (*endptr != '\0') {
         strcat(error, "single elem is not number");
         return 0;
       }
