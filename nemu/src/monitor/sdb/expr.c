@@ -408,14 +408,6 @@ word_t eval(char* error, int l, int r) {
     return eval(error, l + 1, r - 1);
   }
   else{
-    /* Ignore space */
-    if(tokens[l].type == TK_NOTYPE){
-      return eval(error, l + 1, r);
-    }
-    if(tokens[r].type == TK_NOTYPE){
-      return eval(error, l, r - 1);
-    }
-
     /* Find op */
     for(int i = l;i <= r;i++){
       int op = tokens[i].type;
