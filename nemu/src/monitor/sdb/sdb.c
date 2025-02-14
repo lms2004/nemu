@@ -244,6 +244,7 @@ static int cmd_test(char *arg){
 
     word_t R_value = atoi(R_expr_value);
     word_t expr_value;
+    word_t expr_value_BNF;
 
     expr_value = expr(args, error);
 
@@ -254,6 +255,9 @@ static int cmd_test(char *arg){
       continue;
     }
 
+    expr_value_BNF = wp_expr(args, error);
+    
+
     if(strcmp(error, "") != 0){
       Error("Test_case %d: %s",  case_i, error);
       Error("ignore %d cases \n",ignore);
@@ -262,6 +266,12 @@ static int cmd_test(char *arg){
 
     if(R_value != expr_value){
       Error("Test_case %d: Not match: %u   %u\n", case_i, R_value, expr_value);
+      Error("ignore %d cases \n",ignore);
+      return 0;
+    }
+    
+    if(R_value != expr_value_BNF){
+      Error("Test_case %d: Not match: %u   %u\n", case_i, R_value, expr_value_BNF);
       Error("ignore %d cases \n",ignore);
       return 0;
     }
