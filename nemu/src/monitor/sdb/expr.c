@@ -462,7 +462,7 @@ word_t wp_expr(char *e, char* error){
   }
 
   for(int i = 0;i < nr_token;i++){
-    int IsOp = (i == 0 || (TK_PLUS <= tokens[i - 1].type && tokens[i - 1].type <= TK_AND));
+    int IsOp = (i == 0 || (TK_PLUS <= tokens[i - 1].type && tokens[i - 1].type <= TK_RQUOTE));
 
     if (tokens[i].type == TK_MUL && IsOp)  {
       tokens[i].type = TK_DEREF;
