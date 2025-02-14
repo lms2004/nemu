@@ -402,15 +402,6 @@ word_t eval(char* error, int l, int r) {
     return eval(error, l + 1, r - 1);
   }
   else{
-    switch (tokens[l].type)
-    {
-    case constant expression:
-      /* code */
-      break;
-    
-    default:
-      break;
-    }
     if(tokens[l].type == TK_NOTYPE){
       return eval(error, l + 1, r);
     }
@@ -418,17 +409,7 @@ word_t eval(char* error, int l, int r) {
       return eval(error, l, r - 1);
     }
 
-    if(tokens[l].type == TK_MINUS){
-      if(l + 1 < r && tokens[l + 1].type == TK_NUM){
-        return 0 - atoi(tokens[l + 1].str) + eval(error, l + 2, r);
-      }
-      return 0 - eval(error, l + 1, r);
-    }
-
-    if(tokens[l].type == TK_DEREF){
-      return vaddr_read(eval(error, l + 1, r), 4);
-    }
-
+    /* Find op */
     for(int i = l;i <= r;i++){
       int op = tokens[i].type;
       if(op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB){
@@ -456,6 +437,17 @@ word_t eval(char* error, int l, int r) {
         Log("Sub_expr_value = %d", sub_expr_value);
         return sub_expr_value;
       }
+    }
+
+    if(tokens[l].type == TK_MINUS){
+      if(l + 1 < r && tokens[l + 1].type == TK_NUM){
+        return 0 - atoi(tokens[l + 1].str) + eval(error, l + 2, r);
+      }
+      return 0 - eval(error, l + 1, r);
+    }
+
+    if(tokens[l].type == TK_DEREF){
+      return vaddr_read(eval(error, l + 1, r), 4);
     }
   }
 
