@@ -55,7 +55,7 @@ static struct rule {
   {"\\(", TK_LQUOTE},     // left quote
   {"\\)", TK_RQUOTE},     // right quote
 
-  {"$[a-zA-Z]+", TK_REG},
+  {"$[a-zA-Z]+[0-9]*", TK_REG},
   {"!=", TK_NEQ},
   {"==", TK_EQ},        // equal
   {"&&", TK_AND},

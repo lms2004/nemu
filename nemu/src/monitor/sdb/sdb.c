@@ -121,7 +121,7 @@ static int cmd_info(char* args){
   return 0;
 
 }
-
+// 0x80000000 or  0x100000 附近的内存
 static int cmd_x(char* args){
   if(args == NULL){
     /* no argument given */
