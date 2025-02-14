@@ -243,10 +243,8 @@ static int cmd_test(char *arg){
     char* error = calloc(128, sizeof(char));
 
     word_t R_value = atoi(R_expr_value);
-    word_t expr_value;
     word_t expr_value_BNF;
 
-    expr_value = expr(args, error);
 
     if(SIGFPE_flag == 1){
       ignore++;
