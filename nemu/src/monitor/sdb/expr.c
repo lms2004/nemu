@@ -377,17 +377,25 @@ word_t expr(char *e, char* error) {
 
 
 int check_parentheses(int l, int r){
-  if(tokens[l].type != TK_LQUOTE){
+  if(tokens[l].type != TK_LQUOTE || tokens[r].type != TK_RQUOTE){
     return 0;
   }
 
+  l++;r++;
+  int Lmatch = 0;
   while(l < r){
-    if(tokens[l].type == TK_RQUOTE && l != r){
+    if(tokens[l].type == TK_LQUOTE){
+      Lmatch++;
+    }
+    else if(tokens[l].type == TK_RQUOTE){
+      Lmatch--;
+    }
+    
+    if(Lmatch < 0){
       return 0;
     }
     l++;
   }
-  
   return 1;
 }
 
