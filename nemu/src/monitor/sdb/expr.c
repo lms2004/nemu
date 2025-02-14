@@ -406,11 +406,21 @@ word_t eval(char* error, int l, int r) {
     return 0;
   } 
   else if(l == r){
-    int num = atoi(tokens[l].str);
-
-    if(num == 0 && tokens[l].str[0] != '0'){
-      strcat(error, "single elem is not number");
-      return 0;
+    int num;
+    if(tokens[l].type == TK_HEX){
+      char *endptr;
+      num = strtol(tokens[l].str, &endptr, 16);
+  
+      if (*endptr == '\0') {
+        strcat(error, "single elem is not number");
+        return 0;
+      }
+    }else{
+      num = atoi(tokens[l].str);
+      if(num == 0 && tokens[l].str[0] != '0'){
+        strcat(error, "single elem is not number");
+        return 0;
+      }
     }
     return num;
   }
