@@ -451,7 +451,7 @@ word_t eval(char* error, int l, int r) {
         continue;
       }
 
-      int IsOp = (op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB || TK_AND || TK_NEQ || TK_EQ);
+      int IsOp = (op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB || op == TK_AND || op == TK_NEQ || op == TK_EQ);
 
       if(!match && IsOp){
         int val1 = eval(error, l, i - 1);
