@@ -381,7 +381,8 @@ int check_parentheses(int l, int r){
     return 0;
   }
 
-  l++;r++;
+  l++;  r++;
+
   int Lmatch = 0;
   while(l < r){
     if(tokens[l].type == TK_LQUOTE){
