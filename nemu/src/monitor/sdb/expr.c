@@ -427,9 +427,21 @@ word_t eval(char* error, int l, int r) {
     }
 
     /* Find op */
+
+    int match = 0;
     for(int i = l;i <= r;i++){
       int op = tokens[i].type;
-      if(op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB){
+
+      if(op == TK_LQUOTE){
+        match++;
+        continue;
+      }
+      else if(op == TK_RQUOTE){
+        match--;
+        continue;
+      }
+
+      if(!match && (op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB)){
         int val1 = eval(error, l, i - 1);
         int val2 = eval(error, i + 1, r);
         
