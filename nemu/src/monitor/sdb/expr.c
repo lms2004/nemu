@@ -490,7 +490,8 @@ word_t eval(char* error, int l, int r) {
           sub_expr_value = val1 && val2;
           break;
         default:
-          assert(0);
+          strcat(error, "Unknow op");
+          return -1;
         }
         Log("Sub_expr_value = %d", sub_expr_value);
         return sub_expr_value;
