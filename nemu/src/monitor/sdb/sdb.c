@@ -245,15 +245,14 @@ static int cmd_test(char *arg){
     word_t R_value = atoi(R_expr_value);
     word_t expr_value_BNF;
 
-
+    expr_value_BNF = wp_expr(args, error);
+    
     if(SIGFPE_flag == 1){
       ignore++;
       case_i++;
       SIGFPE_flag = 0;
       continue;
     }
-
-    expr_value_BNF = wp_expr(args, error);
     
 
     if(strcmp(error, "") != 0){

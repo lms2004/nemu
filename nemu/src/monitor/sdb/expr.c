@@ -465,7 +465,15 @@ word_t eval(char* error, int l, int r) {
           sub_expr_value = val1 * val2;
           break;
         case TK_DIV:
-          sub_expr_value = val1 / val2;
+          /* catch SIGFPE signal */
+          if(0 == setjmp(env)){
+            sub_expr_value = val1 / val2;
+          }else{
+            if(SIGFPE_flag == 1){
+              strcat(error, "Divide by zero");
+              return -1;
+            }
+          }
           break;
         case TK_SUB:
           sub_expr_value = val1 - val2;
