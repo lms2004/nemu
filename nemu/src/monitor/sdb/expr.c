@@ -27,10 +27,12 @@
 
 /* Implement the following function */
 word_t vaddr_read(vaddr_t addr, int len);
+word_t isa_reg_str2val(const char *name, bool *success);
+
 
 enum {
   // Object
-  TK_NOTYPE = 256, TK_NUM, TK_ADDR, TK_HEX, TK_REG,
+  TK_NOTYPE = 256, TK_NUM, TK_HEX, TK_REG,
   
   // Operator
   TK_PLUS, TK_SUB, TK_MUL, TK_DIV,
@@ -132,7 +134,6 @@ static bool make_token(char *e) {
           case TK_NEQ: tokens[nr_token].type = TK_NEQ; break;
           case TK_AND: tokens[nr_token].type = TK_AND; break;
           case TK_HEX: tokens[nr_token].type = TK_HEX; break;
-          case TK_ADDR: tokens[nr_token].type = TK_ADDR; break;
           default: printf("Unknow token type\n"); return false;
         }
 
@@ -407,21 +408,38 @@ word_t eval(char* error, int l, int r) {
   } 
   else if(l == r){
     int num;
-    if(tokens[l].type == TK_HEX){
+    switch (tokens[l].type)
+    {
+    case TK_HEX:
       char *endptr;
       num = strtol(tokens[l].str, &endptr, 16);
-  
+
       if (*endptr != '\0') {
         strcat(error, "single elem is not number");
         return 0;
       }
-    }else{
+      break;
+    case TK_NUM:
       num = atoi(tokens[l].str);
       if(num == 0 && tokens[l].str[0] != '0'){
         strcat(error, "single elem is not number");
         return 0;
       }
+      break;
+    case TK_REG:
+      bool success = true;
+      num = isa_reg_str2val(tokens[l].str + 1, &success);
+      if(!success){
+        strcat(error, "Invalid reg name");
+        return 0;
+      }
+      break;
+    default:
+      num = 0;
+      break;
     }
+
+
     return num;
   }
   else if(check_parentheses(l , r)){
