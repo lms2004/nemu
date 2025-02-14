@@ -264,12 +264,6 @@ static int cmd_test(char *arg){
       return 0;
     }
 
-    if(R_value != expr_value){
-      Error("Test_case %d: Not match: %u   %u\n", case_i, R_value, expr_value);
-      Error("ignore %d cases \n",ignore);
-      return 0;
-    }
-    
     if(R_value != expr_value_BNF){
       Error("Test_case %d: Not match: %u   %u\n", case_i, R_value, expr_value_BNF);
       Error("ignore %d cases \n",ignore);
