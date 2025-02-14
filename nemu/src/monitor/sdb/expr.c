@@ -454,6 +454,15 @@ word_t eval(char* error, int l, int r) {
       int IsOp = (op == TK_PLUS || op == TK_MUL || op == TK_DIV || op == TK_SUB || op == TK_AND || op == TK_NEQ || op == TK_EQ);
 
       if(!match && IsOp){
+        // register SIGFPE signal
+        struct sigaction sa = {};
+        memset(&sa, 0, sizeof(sa));
+        sa.sa_flags = SA_NODEFER;
+        sa.sa_handler = sigsegv_handler;
+        if (sigaction(SIGFPE, &sa, NULL) == -1) {
+            perror("sigaction");
+        }
+        
         int val1 = eval(error, l, i - 1);
         int val2 = eval(error, i + 1, r);
         
