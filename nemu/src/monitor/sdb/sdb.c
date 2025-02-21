@@ -177,14 +177,16 @@ static int cmd_p(char *args){
     return 0;
   }
   args = strtok(NULL, "");
-
+  
   char* error = calloc(128, sizeof(char));
 
-  wp_expr(args, error);
-
+  word_t expr_value = wp_expr(args, error);
+  
   if(strcmp(error, "") != 0){
     Error("%s", error);
   }
+  
+  printf("=%u\n", expr_value);
 
   return 0;
 }
