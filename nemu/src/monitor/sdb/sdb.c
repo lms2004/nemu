@@ -63,8 +63,6 @@ static int cmd_x(char* args);
 
 static int cmd_p(char *args);
 
-static int cmd_p1(char *args);
-
 static int cmd_test(char *arg);
 
 static int cmd_w(char *args);
@@ -86,8 +84,7 @@ static struct {
   { "si", "Step execute", cmd_si},
   { "info", "Print program information", cmd_info},
   { "x", "Scan memory", cmd_x},
-  { "p", "Eval expr", cmd_p},
-  { "p1", "Eval expr(BNF)", cmd_p1},
+  { "p", "Eval expr(BNF)", cmd_p},
   { "test", "Test command", cmd_test},
   { "w", "Set watchpoint", cmd_w},
   { "d", "Delete watchpoint", cmd_d},
@@ -171,26 +168,8 @@ static int cmd_x(char* args){
   return 0;
 }
 
+
 static int cmd_p(char *args){
-  if(args == NULL){
-    /* no argument given */
-    printf("p command:  eg. p (expr) \n");
-    return 0;
-  }
-  args = strtok(NULL, "");
-
-  char* error = calloc(128, sizeof(char));
-
-  expr(args, error);
-
-  if(strcmp(error, "") != 0){
-    Error("%s", error);
-  }
-
-  return 0;
-}
-
-static int cmd_p1(char *args){
   if(args == NULL){
     /* no argument given */
     printf("p command:  eg. p (expr) \n");
