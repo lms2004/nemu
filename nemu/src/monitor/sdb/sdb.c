@@ -24,6 +24,8 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 void wp_display();
+void new_wp(char* args);
+
 word_t vaddr_read(vaddr_t addr, int len);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -65,6 +67,10 @@ static int cmd_p1(char *args);
 
 static int cmd_test(char *arg);
 
+static int cmd_w(char *args);
+
+static int cmd_d(char *args);
+
 static int cmd_help(char *args);
 
 
@@ -80,9 +86,11 @@ static struct {
   { "si", "Step execute", cmd_si},
   { "info", "Print program information", cmd_info},
   { "x", "Scan memory", cmd_x},
-  { "p", "eval expr", cmd_p},
-  { "p1", "eval expr(BNF)", cmd_p1},
-  { "test", "test command", cmd_test}
+  { "p", "Eval expr", cmd_p},
+  { "p1", "Eval expr(BNF)", cmd_p1},
+  { "test", "Test command", cmd_test},
+  { "w", "Set watchpoint", cmd_w},
+  { "d", "Delete watchpoint", cmd_d},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -273,6 +281,20 @@ static int cmd_test(char *arg){
   return 0;
 }
 
+static int cmd_w(char* args){
+  if(args == NULL){
+    /* no argument given */
+    printf("w command:  need expr, eg. w (expr) \n");
+    return 0;
+  }
+  args = strtok(NULL, "");
+  new_wp(args);
+  return 0;
+}
+
+static int cmd_d(char *args){
+  return 0;
+}
 
 static int cmd_help(char *args) {
   /* extract the first argument */

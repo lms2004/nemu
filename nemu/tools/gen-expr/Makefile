@@ -21,5 +21,5 @@ run:
 	./build/gen-expr 10000 > input.txt
 
 t:
-	gcc -o main t.c 
+	g++ -o main t.cpp 
 	./main
