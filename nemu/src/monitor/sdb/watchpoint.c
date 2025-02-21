@@ -99,9 +99,15 @@ void free_wp(WP *wp){
 
   if(curr == NULL){
     printf("No such watchpoint to free\n");
+    return;
   }
 
-  prev->next = curr->next;
+  // whether the watchpoint has prev
+  if(curr == head){
+    head = NULL;
+  }else{
+    prev->next = curr->next;
+  }
 
   // push to free_ table
   curr->next = free_;
