@@ -57,6 +57,8 @@ void wp_display() {
   }
 }
 
+/* new_wp */
+
 WP* new_wp(char* args) {
   if(free_ == NULL) {
     printf("No enough watchpoint.\n");
@@ -76,6 +78,12 @@ WP* new_wp(char* args) {
   char* error = calloc(128, sizeof(char));
   wp->stable_value = wp_expr(args, error);
 
+  return wp;
+}
+
+void set_wp(char* args){
+  WP *wp = new_wp(args);
+
   // push to head table
   if(head == NULL){
     head = wp;
@@ -84,8 +92,14 @@ WP* new_wp(char* args) {
     head->next = wp;
     wp->next = NULL;
   }
-  return wp;
+
+  return ;
 }
+
+// end of set_wp
+
+
+/* free_wp */ 
 
 void free_wp(WP *wp){
   WP* curr = head;
@@ -113,6 +127,18 @@ void free_wp(WP *wp){
   curr->next = free_;
   free_ = curr;
 }
+
+void delete_wp(unsigned int id){
+  WP* curr = head;
+  while(id){
+    curr = curr->next;
+    id--;
+  }
+  free_wp(curr);
+  return ;
+}
+
+// end of free_wp
 
 
 int scan_wp(){

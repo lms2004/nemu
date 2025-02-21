@@ -24,7 +24,8 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 void wp_display();
-void new_wp(char* args);
+void set_wp(char* args);
+void delete_wp(unsigned int id);
 
 word_t vaddr_read(vaddr_t addr, int len);
 
@@ -267,11 +268,23 @@ static int cmd_w(char* args){
     return 0;
   }
   args = strtok(NULL, "");
-  new_wp(args);
+  
+  set_wp(args);
   return 0;
 }
 
 static int cmd_d(char *args){
+  if(args == NULL){
+    /* no argument given */
+    printf("d command:  need id, eg. d (id) \n");
+    return 0;
+  }
+  args = strtok(NULL, "");
+
+  int id = atoi(args);
+  
+  delete_wp(id);
+
   return 0;
 }
 
