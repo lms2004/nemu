@@ -114,10 +114,10 @@ static bool make_token(char *e) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
-
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
-
+        #ifdef CONFIG_LOG
+          Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+              i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        #endif
         position += substr_len;
 
         switch (rules[i].token_type) {
@@ -285,8 +285,9 @@ int eval_expr(char* error){
           Num.type = TK_NUM;
           
           stack[stack_top] = Num;
-
-          Log("Quote_sub_expr_value = %d", rhs);
+          #ifdef CONFIG_LOG
+            Log("Quote_sub_expr_value = %d", rhs);
+          #endif
           return rhs; 
       }
       
@@ -306,8 +307,9 @@ int eval_expr(char* error){
     Num.type = TK_NUM;
     
     stack[++stack_top] = Num;
-
-    Log("Sub_expr_value = %d", rhs);
+    #ifdef CONFIG_LOG
+      Log("Sub_expr_value = %d", rhs);
+    #endif
     return rhs; 
 }
 
@@ -371,8 +373,9 @@ word_t expr(char *e, char* error) {
   if(strcmp(error, "") != 0){
     return 0;
   }
-
-  Log("Expr_value = %u", expr_value);
+  #ifdef CONFIG_LOG
+    Log("Expr_value = %u", expr_value);
+  #endif
   return expr_value;
 }
 
@@ -520,7 +523,9 @@ word_t eval(char* error, int l, int r) {
           strcat(error, "Unknow op");
           return -1;
         }
-        Log("Sub_expr_value = %d", sub_expr_value);
+        #ifdef CONFIG_LOG
+          Log("Sub_expr_value = %d", sub_expr_value);
+        #endif
         return sub_expr_value;
       }
     }
@@ -565,8 +570,9 @@ word_t wp_expr(char *e, char* error){
   if(strcmp(error, "") != 0){
     return 0;
   }
-
-  Log("Expr_value = %u", expr_value);
+  #ifdef CONFIG_LOG
+    Log("Expr_value = %u", expr_value);
+  #endif
   return expr_value;
 }
 
