@@ -52,7 +52,7 @@ void wp_display() {
   }
   printf("Num     Type                    What\n");
   while(head != NULL) {
-    printf("%d      hw watchpoint           %s\n", head->NO, head->expr);
+    printf("%d      hw watchpoint(hits:%d)           %s\n", head->NO, head->hits, head->expr);
     head = head->next;
   }
 }
@@ -149,6 +149,7 @@ int scan_wp(){
     word_t expr_value = wp_expr(curr->expr, error);
     if(expr_value != curr->stable_value){
       curr->stable_value = expr_value;
+      curr->hits++;
       flag = 1;
     }
     curr = curr->next;
