@@ -179,14 +179,19 @@ static int cmd_p(char *args){
   args = strtok(NULL, "");
   
   char* error = calloc(128, sizeof(char));
+  
+  #if CONFIG_LOG != 1
+    word_t expr_value =
+  #endif
 
-  word_t expr_value = wp_expr(args, error);
+  wp_expr(args, error);
   
   if(strcmp(error, "") != 0){
     Error("%s", error);
   }
-  
-  printf("=%u\n", expr_value);
+  #if CONFIG_LOG != 1
+    printf("=%u\n", expr_value);
+  #endif
 
   return 0;
 }
