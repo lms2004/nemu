@@ -20,6 +20,13 @@
 #include <assert.h>
 #include <string.h>
 
+const char *regs[] = {
+  "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
+};
+
 // this should be enough
 static char buf[65536] = {};
 static char code_buf[65536 + 1024] = {}; // a little larger than `buf`
@@ -60,11 +67,22 @@ static void gen_num() {
   int f = rand() % 10;
   int minus = rand() % 2;
   int Ishex = rand() % 2;
+  int Isreg = rand() % 2;
+
   if(Ishex){
     buf[buf_i++] = '0';
     buf[buf_i++] = 'x';
     for (int i = 0; i < rand() % 2 + 1; i++) {
       buf[buf_i++] = rand() % 16 < 10 ? rand() % 10 + '0' : rand() % 6 + 'a';
+    }
+    return ;
+  }
+
+  if(Isreg){
+    buf[buf_i++] = '$';
+    int reg = rand() % 32;
+    for (int i = 0; i < strlen(regs[reg]); i++) {
+      buf[buf_i++] = regs[reg][i];
     }
     return ;
   }

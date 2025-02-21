@@ -114,9 +114,10 @@ static bool make_token(char *e) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
+
         #ifdef CONFIG_LOG
           Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-              i, rules[i].regex, position, substr_len, substr_len, substr_start);
+                    i, rules[i].regex, position, substr_len, substr_len, substr_start);
         #endif
         position += substr_len;
 
@@ -285,6 +286,7 @@ int eval_expr(char* error){
           Num.type = TK_NUM;
           
           stack[stack_top] = Num;
+
           #ifdef CONFIG_LOG
             Log("Quote_sub_expr_value = %d", rhs);
           #endif
@@ -307,6 +309,7 @@ int eval_expr(char* error){
     Num.type = TK_NUM;
     
     stack[++stack_top] = Num;
+
     #ifdef CONFIG_LOG
       Log("Sub_expr_value = %d", rhs);
     #endif

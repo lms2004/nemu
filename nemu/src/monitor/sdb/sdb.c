@@ -183,12 +183,12 @@ static int cmd_p(char *args){
   #if CONFIG_LOG != 1
     word_t expr_value =
   #endif
-
   wp_expr(args, error);
   
   if(strcmp(error, "") != 0){
     Error("%s", error);
   }
+  
   #if CONFIG_LOG != 1
     printf("=%u\n", expr_value);
   #endif
