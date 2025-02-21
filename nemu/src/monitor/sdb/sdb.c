@@ -268,7 +268,7 @@ static int cmd_w(char* args){
     return 0;
   }
   args = strtok(NULL, "");
-  
+
   set_wp(args);
   return 0;
 }
@@ -284,6 +284,7 @@ static int cmd_d(char *args){
   int id = atoi(args);
   
   delete_wp(id);
+  
 
   return 0;
 }

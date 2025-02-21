@@ -198,6 +198,13 @@ config CONFIG_WATCHPOINT
   help
     Enable watchpoint functionality for debugging.
     Allows setting breakpoints on memory accesses.
+
+config CONFIG_LOG
+  bool "Enable log"
+  default n 
+  help
+    Enable log functionality for debugging.
+    Allows logging the execution of the program.
 endmenu
 
 if MODE_SYSTEM
