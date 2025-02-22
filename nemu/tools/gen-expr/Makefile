@@ -22,4 +22,5 @@ run:
 
 t:
 	g++ -o main t.cpp -g
-	cgdb main
+	./main
+	rm main
