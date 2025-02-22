@@ -41,8 +41,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
 #ifdef CONFIG_WATCHPOINT
-  if(scan_wp()){  nemu_state.state = NEMU_STOP; }
-  Log("nemu: %s at pc = " FMT_WORD, ANSI_FMT("STOP", ANSI_FG_RED), cpu.pc);
+  if(scan_wp()){  
+    nemu_state.state = NEMU_STOP; 
+    Log("nemu: %s at pc = " FMT_WORD, ANSI_FMT("STOP", ANSI_FG_RED), cpu.pc);
+  }
 #endif
 }
 
