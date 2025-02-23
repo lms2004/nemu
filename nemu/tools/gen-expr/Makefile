@@ -13,25 +13,14 @@
 # See the Mulan PSL v2 for more details.
 #**************************************************************************************/
 
-# NAME = gen-expr
-# SRCS = gen-expr.c
-# include $(NEMU_HOME)/scripts/build.mk
+NAME = gen-expr
+SRCS = gen-expr.c
+include $(NEMU_HOME)/scripts/build.mk
 
+run:
+	./build/gen-expr 5 > input.txt
 
-WORK_DIR  = $(shell pwd)
-BUILD_DIR = $(WORK_DIR)/build
-SRC_I_DIR = $(BUILD_DIR)/src-i-$(NAME)$(SO)
-
-SRCS = test.c
-
-SRC_I = $(SRCS:%.c=$(SRC_I_DIR)/%.i)
-
-$(SRC_I_DIR)/%.i: %.c
-	@echo + CC $<
-	@mkdir -p $(dir $@)
-	@$(CC) -E -o $@ $<
-
-
-
-t:$(SRC_I) 
-	echo "done"
+t:
+	g++ -o main t.cpp -g
+	./main
+	rm main
