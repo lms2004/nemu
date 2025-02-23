@@ -50,7 +50,7 @@ $(SRC_I_DIR)/%.i: %.c
 	$(call call_fixdep, $(@:.i=.d), $@)
 
 $(SRC_I_DIR)/%.i: %.cc
-	@echo + CXX $<
+	@echo + CXX $@
 	@mkdir -p $(dir $@)
 	@$(CXX) $(CFLAGS) $(CXXFLAGS) -E -o $@ $<
 	$(call call_fixdep, $(@:.i=.d), $@)
