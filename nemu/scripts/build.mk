@@ -11,6 +11,7 @@ WORK_DIR  = $(shell pwd)
 BUILD_DIR = $(WORK_DIR)/build
 
 INC_PATH := $(WORK_DIR)/include $(INC_PATH)
+SRC_I_DIR = $(BUILD_DIR)/src-i-$(NAME)$(SO)
 OBJ_DIR  = $(BUILD_DIR)/obj-$(NAME)$(SO)
 BINARY   = $(BUILD_DIR)/$(NAME)$(SO)
 
@@ -26,6 +27,7 @@ CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
 LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
+SRC_I = $(SRCS:%.c=$(SRC_I_DIR)/%.i) $(CXXSRC:%.cc=$(SRC_I_DIR)/%.i)
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
@@ -40,6 +42,17 @@ $(OBJ_DIR)/%.o: %.cc
 	@$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $<
 	$(call call_fixdep, $(@:.o=.d), $@)
 
+# .i files
+$(SRC_I_DIR)/%.i: %.c
+	@echo + CC $<
+	@mkdir -p $(dir $@)
+	@$(CC) -E -o $@ $<
+
+$(SRC_I_DIR)/%.i: %.cc
+	@echo + CXX $<
+	@mkdir -p $(dir $@)
+	@$(CXX) -E -o $@ $<
+
 # Depencies
 -include $(OBJS:.o=.d)
 
@@ -49,7 +62,7 @@ $(OBJ_DIR)/%.o: %.cc
 
 app: $(BINARY)
 
-$(BINARY):: $(OBJS) $(ARCHIVES)
+$(BINARY):: $(OBJS) $(ARCHIVES) 
 	@echo + LD $@
 	@$(LD) -o $@ $(OBJS) $(LDFLAGS) $(ARCHIVES) $(LIBS)
 
