@@ -65,6 +65,7 @@ static int decode_exec(Decode *s) {
   __VA_ARGS__ ; \
 }
 
+
   INSTPAT_START();
   /* R     func7   rs2   rs1   func3  rd opcode                                           */
   /* I     imm11         rs1   func3  rd opcode                                           */
