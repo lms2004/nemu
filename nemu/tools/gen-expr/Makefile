@@ -21,6 +21,6 @@ run:
 	./build/gen-expr 5 > input.txt
 
 t:
-	g++ -o main t.cpp -g
+	gcc -o main test.c -g
 	./main
 	rm main
