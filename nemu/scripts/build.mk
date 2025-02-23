@@ -37,21 +37,23 @@ $(OBJ_DIR)/%.o: %.c
 	$(call call_fixdep, $(@:.o=.d), $@)
 
 $(OBJ_DIR)/%.o: %.cc
-	@echo + CXX $<
+	@echo + CXX $@
 	@mkdir -p $(dir $@)
 	@$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $<
 	$(call call_fixdep, $(@:.o=.d), $@)
 
 # .i files
 $(SRC_I_DIR)/%.i: %.c
-	@echo + CC $<
+	@echo + CC $@
 	@mkdir -p $(dir $@)
-	@$(CC) -E -o $@ $<
+	@$(CC) $(CFLAGS) -E -o $@ $<
+	$(call call_fixdep, $(@:.i=.d), $@)
 
 $(SRC_I_DIR)/%.i: %.cc
 	@echo + CXX $<
 	@mkdir -p $(dir $@)
-	@$(CXX) -E -o $@ $<
+	@$(CXX) $(CFLAGS) $(CXXFLAGS) -E -o $@ $<
+	$(call call_fixdep, $(@:.i=.d), $@)
 
 # Depencies
 -include $(OBJS:.o=.d)
@@ -62,7 +64,7 @@ $(SRC_I_DIR)/%.i: %.cc
 
 app: $(BINARY)
 
-$(BINARY):: $(OBJS) $(ARCHIVES) 
+$(BINARY):: $(OBJS) $(ARCHIVES) $(SRC_I)
 	@echo + LD $@
 	@$(LD) -o $@ $(OBJS) $(LDFLAGS) $(ARCHIVES) $(LIBS)
 
