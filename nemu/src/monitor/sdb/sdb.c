@@ -162,7 +162,7 @@ static int cmd_x(char* args){
 
     /* scan memory */
     for(int i = 0;i < N;i++){
-      printf("0x%x: 0x%x ",addr + 4*i, vaddr_read(addr, 4));
+      printf("0x%x: 0x%x ",addr + 4*i, vaddr_read(addr + 4*i, 4));
       if(i % 4 == 3) printf("\n");
     }printf("\n");
 
