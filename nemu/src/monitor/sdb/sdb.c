@@ -102,6 +102,7 @@ static int cmd_si(char* args){
     int N = atoi(arg);
 
     cpu_exec(N);
+    wp_display();
   }
   return 0;
 }
@@ -158,8 +159,7 @@ static int cmd_x(char* args){
       /* get addr value */
       addr = strtol(arg, NULL, 16);
     }
-    addr += N;
-    
+
     /* scan memory */
     for(int i = 0;i < N;i++){
       printf("0x%x: 0x%x ",addr + 4*i, vaddr_read(addr, 4));
