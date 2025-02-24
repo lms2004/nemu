@@ -574,7 +574,7 @@ word_t wp_expr(char *e, char* error){
     return 0;
   }
   #ifdef CONFIG_LOG
-    Log("Expr_value = %u", expr_value);
+    Log("Expr_value = 0x%x", expr_value);
   #endif
   return expr_value;
 }
