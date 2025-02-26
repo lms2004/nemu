@@ -102,7 +102,6 @@ static int cmd_si(char* args){
     int N = atoi(arg);
 
     cpu_exec(N);
-    wp_display();
   }
   return 0;
 }
