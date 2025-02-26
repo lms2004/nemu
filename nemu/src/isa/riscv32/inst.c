@@ -33,7 +33,7 @@ enum {
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 #define immB() do { *imm = (SEXT(BITS(i, 31, 31), 13) << 12) | (SEXT(BITS(i, 7, 7), 12) << 11) | (SEXT(BITS(i, 30, 25), 11) << 5) | (SEXT(BITS(i, 11, 8), 5) << 1); } while(0)
-#define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 21) << 20) | (SEXT(BITS(i, 19, 12), 20) << 12) | (BITS(i, 20, 20) << 11) | (SEXT(BITS(i, 30, 21), 10) << 1); } while(0)
+#define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 21) << 20) | (SEXT(BITS(i, 19, 12), 20) << 12) | (BITS(i, 20, 12) << 11) | (SEXT(BITS(i, 30, 21), 11) << 1); } while(0)
 
 
 
